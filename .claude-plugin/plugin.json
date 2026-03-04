@@ -1,0 +1,12 @@
+{
+  "name": "post-bridge",
+  "description": "Post to Instagram, TikTok, YouTube, X, LinkedIn, Facebook, Pinterest, Threads, and Bluesky via Post Bridge API",
+  "version": "1.0.0",
+  "author": {
+    "name": "Post Bridge",
+    "url": "https://www.post-bridge.com"
+  },
+  "repository": "https://github.com/post-bridge-hq/agent-mode",
+  "license": "MIT",
+  "homepage": "https://www.post-bridge.com/agents"
+}
