@@ -32,7 +32,7 @@ Update methods by installation type:
 
 1. Create a Post Bridge account at [post-bridge.com](https://post-bridge.com)
 2. Connect your social accounts (TikTok, Instagram, YouTube, Twitter, etc.)
-3. Enable API access (Settings > API)
+3. [Enable API access](https://www.post-bridge.com/dashboard/api-keys) (Settings > API)
 4. Store your API key in workspace `.env`:
    ```
    POST_BRIDGE_API_KEY=pb_live_xxxxx
