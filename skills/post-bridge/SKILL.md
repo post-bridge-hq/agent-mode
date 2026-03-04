@@ -230,18 +230,20 @@ Returns:
 
 **Sync analytics** — refresh data from connected platforms:
 ```
-POST /v1/analytics/sync
+POST /v1/analytics/sync?platform=tiktok
 ```
-Rate limited to once every 5 minutes. Syncs TikTok, YouTube, and Instagram analytics. Returns per-connection results:
+Triggers a background sync of analytics data. Supports all tracked platforms: TikTok, YouTube, and Instagram.
+
+Params:
+- `platform` (optional): `tiktok`, `youtube`, or `instagram` — sync only one platform. Omit to sync all.
+
+Returns:
 ```json
 {
-  "results": [
-    {
-      "connectionId": "...",
-      "postsSynced": 10,
-      "postResultsFound": 8,
-      "postsMatched": 8
-    }
+  "triggered": [
+    { "platform": "tiktok", "runId": "run_..." },
+    { "platform": "youtube", "runId": "run_..." },
+    { "platform": "instagram", "runId": "run_..." }
   ]
 }
 ```
@@ -280,7 +282,7 @@ Post Bridge has a native MCP (Model Context Protocol) server. If you're using Cl
 | `update_post` | Update caption, schedule, accounts, or media on a scheduled/draft post |
 | `delete_post` | Delete a scheduled or draft post |
 | `list_analytics` | Get analytics (views, likes, comments, shares) with platform/timeframe filters |
-| `sync_analytics` | Trigger a refresh of analytics data from all connected platforms |
+| `sync_analytics` | Trigger a background refresh of analytics data. Optional `platform` param to sync a specific platform (tiktok/youtube/instagram) |
 | `list_post_results` | Check per-platform posting results (success/failure with error details) |
 | `list_media` | List uploaded media files with IDs and URLs |
 | `delete_media` | Delete an uploaded media file |
