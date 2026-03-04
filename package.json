@@ -1,0 +1,29 @@
+{
+  "name": "@jackfriks/agent-mode",
+  "version": "1.0.0",
+  "description": "Post Bridge agent mode — post to 9 social media platforms from any AI agent",
+  "license": "MIT",
+  "author": "Jack Friks <jack@frikit.net>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/post-bridge/agent-mode"
+  },
+  "homepage": "https://www.post-bridge.com/agents",
+  "keywords": [
+    "agent-mode",
+    "ai-agent",
+    "social-media",
+    "post-bridge",
+    "mcp",
+    "claude",
+    "chatgpt",
+    "instagram",
+    "tiktok",
+    "youtube",
+    "twitter",
+    "linkedin"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
