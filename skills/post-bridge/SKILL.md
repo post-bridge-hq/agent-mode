@@ -148,7 +148,7 @@ Body: {
 **Queue scheduling (`use_queue`):**
 - Pass `use_queue` to automatically schedule the post to the user's next available queue slot
 - Cannot be used together with `scheduled_at` — pick one or the other
-- `timezone` is optional (defaults to `"UTC"`). Use IANA timezone strings like `"America/New_York"`, `"Europe/London"`
+- `timezone` is optional (defaults to `"UTC"`). Use IANA timezone strings: `America/New_York`, `America/Los_Angeles`, `Europe/London`, `Europe/Paris`, `Asia/Kolkata`, `Asia/Singapore`, `Asia/Tokyo`, `Australia/Sydney`, `Asia/Dubai`, `Europe/Moscow`, `America/Sao_Paulo`
 - The queue schedule is configured by the user in their Post Bridge dashboard
 - If `randomize_queue_time` is enabled in the user's profile, the slot time will be offset by up to ±10 minutes for a more natural posting pattern
 - Returns an error if no queue schedule is configured or no slots are available in the next 90 days
