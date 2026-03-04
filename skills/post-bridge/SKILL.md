@@ -24,7 +24,7 @@ Update methods by installation type:
 | Installation | How to update |
 |--------------|---------------|
 | CLI (`npx skills`) | `npx skills update` |
-| Claude Code plugin | `git pull` in the plugin directory |
+| Claude Code plugin | `/plugin marketplace update` |
 | Cursor | Remote rules auto-sync from GitHub |
 | Manual | Pull latest from repo or re-copy `skills/post-bridge/` |
 

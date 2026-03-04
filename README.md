@@ -27,15 +27,18 @@ npx skills add post-bridge-hq/agent-mode
 
 **Claude Code Plugin:**
 
-Load directly from the repo:
+Add the marketplace and install:
+
+```
+/plugin marketplace add post-bridge-hq/agent-mode
+/plugin install post-bridge@post-bridge
+```
+
+Or load locally for development:
 
 ```bash
 claude --plugin-dir ./agent-mode
 ```
-
-Or if you've cloned it elsewhere, point to the directory. Skills will be available as `/post-bridge:skill-name`.
-
-You can also submit this plugin to a [Claude Code marketplace](https://docs.anthropic.com/en/docs/claude-code/plugin-marketplaces) for easier team distribution.
 
 **Cursor:**
 
