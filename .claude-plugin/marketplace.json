@@ -7,7 +7,7 @@
   "metadata": {
     "description": "Give your AI agent social media posting, scheduling, and analytics across 9 platforms",
     "version": "1.0.0",
-    "repository": "https://github.com/post-bridge/agent-mode"
+    "repository": "https://github.com/post-bridge-hq/agent-mode"
   },
   "plugins": [
     {

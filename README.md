@@ -19,7 +19,7 @@ Skills are markdown files that give AI agents specialized knowledge and workflow
 ### CLI (works with Claude Code, Cursor, Windsurf, Codex, and other agents):
 
 ```bash
-npx skills add post-bridge/agent-mode
+npx skills add post-bridge-hq/agent-mode
 ```
 
 <details>
@@ -28,7 +28,7 @@ npx skills add post-bridge/agent-mode
 **Claude Code Plugin:**
 
 ```
-/plugin marketplace add post-bridge/agent-mode
+/plugin marketplace add post-bridge-hq/agent-mode
 ```
 
 Then:
@@ -42,7 +42,7 @@ Then:
 1. Open Settings (Cmd+Shift+J)
 2. Go to "Rules & Command" > "Project Rules"
 3. Click "Add Rule" > "Remote Rule (GitHub)"
-4. Enter: `https://github.com/post-bridge/agent-mode.git`
+4. Enter: `https://github.com/post-bridge-hq/agent-mode.git`
 
 **Manual:**
 

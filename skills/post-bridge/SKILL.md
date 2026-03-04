@@ -16,7 +16,7 @@ Autonomously manage social media posting via [Post Bridge](https://post-bridge.c
 
 ## Keeping This Skill Updated
 
-**Source**: [github.com/post-bridge/agent-mode](https://github.com/post-bridge/agent-mode)
+**Source**: [github.com/post-bridge-hq/agent-mode](https://github.com/post-bridge-hq/agent-mode)
 **API docs**: [api.post-bridge.com/reference](https://api.post-bridge.com/reference)
 
 Update methods by installation type:
