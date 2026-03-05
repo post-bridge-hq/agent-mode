@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-03-04
+last-updated: 2026-03-05
 allowed-tools: Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -135,7 +135,7 @@ Body: {
   "social_accounts": [<account_id_1>, <account_id_2>],
   "scheduled_at": "2026-01-01T14:00:00Z",  // omit for instant post
   "is_draft": false,  // true to save as draft
-  "use_queue": { "timezone": "America/New_York" },  // optional, auto-schedule to next queue slot
+  "use_queue": true,  // optional, auto-schedule to next queue slot (uses saved timezone)
   "platform_configurations": { ... },  // optional, see below
   "account_configurations": {  // optional, per-account overrides
     "account_configurations": [
@@ -146,11 +146,13 @@ Body: {
 ```
 
 **Queue scheduling (`use_queue`):**
-- Pass `use_queue` to automatically schedule the post to the user's next available queue slot
+- Pass `true` to auto-schedule using the user's saved timezone from their dashboard settings
+- Pass `{ "timezone": "America/New_York" }` to override with a specific IANA timezone
 - Cannot be used together with `scheduled_at` — pick one or the other
-- `timezone` is optional (defaults to `"UTC"`). Use IANA timezone strings: `America/New_York`, `America/Los_Angeles`, `Europe/London`, `Europe/Paris`, `Asia/Kolkata`, `Asia/Singapore`, `Asia/Tokyo`, `Australia/Sydney`, `Asia/Dubai`, `Europe/Moscow`, `America/Sao_Paulo`
+- Timezone priority: explicit timezone > saved profile/workspace timezone > UTC
+- Queue slots are scoped to the workspace of the selected social accounts
 - The queue schedule is configured by the user in their Post Bridge dashboard
-- If `randomize_queue_time` is enabled in the user's profile, the slot time will be offset by up to ±10 minutes for a more natural posting pattern
+- If `randomize_queue_time` is enabled, the slot time will be offset by up to ±10 minutes for a more natural posting pattern
 - Returns an error if no queue schedule is configured or no slots are available in the next 90 days
 
 ### List Posts
@@ -276,7 +278,7 @@ Post Bridge has a native MCP (Model Context Protocol) server. If you're using Cl
 | Tool | Description |
 |------|-------------|
 | `list_social_accounts` | List all connected accounts with IDs, platforms, usernames |
-| `create_post` | Create/schedule a post. Accepts caption, accounts, media_urls, schedule, use_queue, platform configs |
+| `create_post` | Create/schedule a post. Accepts caption, accounts, media_urls, schedule, use_queue (true or {timezone}), platform configs |
 | `list_posts` | List posts with filters (platform, status, limit, offset) |
 | `get_post` | Get full post details by ID |
 | `update_post` | Update caption, schedule, accounts, or media on a scheduled/draft post |
@@ -361,7 +363,7 @@ Use these exact names for platform filtering and configurations:
 - Post to multiple platforms simultaneously by including multiple account IDs
 - Stagger posts throughout the day (e.g. 9am + 3pm) for better reach
 - Use `scheduled_at` to pre-schedule batches — Post Bridge handles the timing
-- Use `use_queue` to auto-schedule posts to the user's next available queue slot — no need to pick a time manually
+- Use `use_queue: true` to auto-schedule posts to the user's next available queue slot using their saved timezone — no need to pick a time manually
 - TikTok draft mode lets you add trending sounds manually before publishing
 - Keep hashtags to 4-5 per post for best engagement
 - Check `results` after posting to see per-platform success/failure
