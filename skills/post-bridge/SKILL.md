@@ -5,14 +5,14 @@ description: >
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
 last-updated: 2026-06-14
-allowed-tools: Bash(npx postbridge:*), Bash(postbridge:*), Bash(./scripts/post-bridge.js:*)
+allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
 # Post Bridge Social Media Skill
 
 Autonomously manage social media posting via [Post Bridge](https://post-bridge.com) API. Post to 9 platforms from a single command or API call.
 
-The CLI is published on npm as **`postbridge`** — run it with `npx postbridge <command>` (no install needed; npx fetches it on first use). Requires Node.js 18+. If `npx postbridge` is unavailable for any reason, fall back to the bundled script at `<skill-path>/scripts/post-bridge.js` (same commands and flags).
+The CLI is published on npm as **`postbridge-cli`** — run it with `npx postbridge-cli <command>` (no install needed; npx fetches it on first use). Requires Node.js 18+. If `npx postbridge-cli` is unavailable for any reason, fall back to the bundled script at `<skill-path>/scripts/post-bridge.js` (same commands and flags).
 
 > **Freshness check**: If more than 30 days have passed since the `last-updated` date above, inform the user that this skill may be outdated and point them to the update options below.
 
@@ -42,7 +42,7 @@ Update methods by installation type:
 
 Or run the setup command:
 ```
-npx postbridge setup --key pb_live_xxxxx
+npx postbridge-cli setup --key pb_live_xxxxx
 ```
 
 ## Auth
@@ -65,38 +65,38 @@ When you receive an "API key not found" error from the CLI:
 
 1. **Tell the user to run the setup command** — setup requires user input, so you cannot run it on their behalf:
    ```bash
-   npx postbridge setup --key pb_live_xxxxx
+   npx postbridge-cli setup --key pb_live_xxxxx
    ```
 2. **Stop and wait** — do not continue with the task. You cannot create posts or perform any API operations without a valid API key.
 3. **DO NOT** search for API keys in env files, keychains, or other locations.
 
 Get your API key at: https://www.post-bridge.com/dashboard/api-keys
 
-> **Note for agents**: Prefer `npx postbridge` (the published npm CLI). If the skill is installed locally and you want to run the bundled copy instead, the script lives at `<skill-path>/scripts/post-bridge.js` — same commands and flags.
+> **Note for agents**: Prefer `npx postbridge-cli` (the published npm CLI). If the skill is installed locally and you want to run the bundled copy instead, the script lives at `<skill-path>/scripts/post-bridge.js` — same commands and flags.
 
 ## CLI Commands
 
 | Command | Description |
 |---------|-------------|
-| `npx postbridge setup --key <key>` | Configure API key |
-| `npx postbridge accounts` | List connected social accounts |
-| `npx postbridge post --caption "..." --accounts 1,2,3` | Create a post |
-| `npx postbridge post --caption "..." --accounts 1,2,3 --schedule "2026-06-20T09:00:00Z"` | Schedule a post for a specific time (UTC) |
-| `npx postbridge post --caption "..." --accounts 1,2 --use-queue` | Auto-schedule to the next queue slot (saved timezone) |
-| `npx postbridge post --caption "..." --accounts 1,2 --use-queue --queue-timezone "America/New_York"` | Auto-schedule to next queue slot in a specific timezone |
-| `npx postbridge post --caption "..." --accounts 1,2 --draft` | Save as a draft instead of publishing |
-| `npx postbridge post --caption "..." --accounts 1,2 --platform-config '{"tiktok":{"draft":true}}'` | Post with per-platform options |
-| `npx postbridge upload --file ./image.jpg` | Upload media, returns media_id |
-| `npx postbridge post --caption "..." --accounts 1,2,3 --media mid_xxx` | Post with uploaded media |
-| `npx postbridge posts` | List recent posts (filters: `--status`, `--platform`, `--limit`, `--offset`) |
-| `npx postbridge posts:get --id <post_id>` | Get post details and status |
-| `npx postbridge posts:update --id <post_id> --caption "..."` | Update a scheduled/draft post (caption, schedule, accounts, media, draft) |
-| `npx postbridge posts:delete --id <post_id>` | Delete a scheduled/draft post |
-| `npx postbridge analytics` | View analytics (filters: `--platform`, `--timeframe 7d\|30d\|90d\|all`) |
-| `npx postbridge analytics:sync` | Refresh analytics data (`--platform tiktok\|youtube\|instagram` optional) |
-| `npx postbridge results --post-id <post_id>` | Check per-platform posting results |
-| `npx postbridge media` | List uploaded media |
-| `npx postbridge media:delete --id <media_id>` | Delete uploaded media |
+| `npx postbridge-cli setup --key <key>` | Configure API key |
+| `npx postbridge-cli accounts` | List connected social accounts |
+| `npx postbridge-cli post --caption "..." --accounts 1,2,3` | Create a post |
+| `npx postbridge-cli post --caption "..." --accounts 1,2,3 --schedule "2026-06-20T09:00:00Z"` | Schedule a post for a specific time (UTC) |
+| `npx postbridge-cli post --caption "..." --accounts 1,2 --use-queue` | Auto-schedule to the next queue slot (saved timezone) |
+| `npx postbridge-cli post --caption "..." --accounts 1,2 --use-queue --queue-timezone "America/New_York"` | Auto-schedule to next queue slot in a specific timezone |
+| `npx postbridge-cli post --caption "..." --accounts 1,2 --draft` | Save as a draft instead of publishing |
+| `npx postbridge-cli post --caption "..." --accounts 1,2 --platform-config '{"tiktok":{"draft":true}}'` | Post with per-platform options |
+| `npx postbridge-cli upload --file ./image.jpg` | Upload media, returns media_id |
+| `npx postbridge-cli post --caption "..." --accounts 1,2,3 --media mid_xxx` | Post with uploaded media |
+| `npx postbridge-cli posts` | List recent posts (filters: `--status`, `--platform`, `--limit`, `--offset`) |
+| `npx postbridge-cli posts:get --id <post_id>` | Get post details and status |
+| `npx postbridge-cli posts:update --id <post_id> --caption "..."` | Update a scheduled/draft post (caption, schedule, accounts, media, draft) |
+| `npx postbridge-cli posts:delete --id <post_id>` | Delete a scheduled/draft post |
+| `npx postbridge-cli analytics` | View analytics (filters: `--platform`, `--timeframe 7d\|30d\|90d\|all`) |
+| `npx postbridge-cli analytics:sync` | Refresh analytics data (`--platform tiktok\|youtube\|instagram` optional) |
+| `npx postbridge-cli results --post-id <post_id>` | Check per-platform posting results |
+| `npx postbridge-cli media` | List uploaded media |
+| `npx postbridge-cli media:delete --id <media_id>` | Delete uploaded media |
 
 ## API Reference
 

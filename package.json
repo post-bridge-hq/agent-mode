@@ -1,11 +1,11 @@
 {
-  "name": "postbridge",
+  "name": "postbridge-cli",
   "version": "1.1.0",
   "description": "Post Bridge CLI — post, schedule, and track social media across 9 platforms from any AI agent or terminal",
   "license": "MIT",
   "author": "Jack Friks <jack@frikit.net>",
   "bin": {
-    "postbridge": "skills/post-bridge/scripts/post-bridge.js"
+    "postbridge-cli": "skills/post-bridge/scripts/post-bridge.js"
   },
   "files": [
     "skills/post-bridge/scripts/post-bridge.js",
@@ -22,7 +22,7 @@
   },
   "keywords": [
     "post-bridge",
-    "postbridge",
+    "postbridge-cli",
     "social-media",
     "scheduler",
     "ai-agent",

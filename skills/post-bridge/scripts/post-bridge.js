@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Post Bridge CLI (postbridge)
+ * Post Bridge CLI (postbridge-cli)
  * A zero-dependency Node.js CLI for managing social media via the Post Bridge API.
  *
  * MIT Licensed — https://github.com/post-bridge-hq/agent-mode
@@ -48,7 +48,7 @@ function saveApiKey(key, global = true) {
 async function request(method, endpoint, body = null) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: postbridge setup");
+    error("No API key found. Run: postbridge-cli setup");
     process.exit(1);
   }
 
@@ -82,7 +82,7 @@ async function request(method, endpoint, body = null) {
 async function uploadFile(filePath) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: postbridge setup");
+    error("No API key found. Run: postbridge-cli setup");
     process.exit(1);
   }
 
@@ -172,7 +172,7 @@ const COMMANDS = {
     const key = parsed.key || parsed["api-key"];
 
     if (!key) {
-      error("Usage: postbridge setup --key pb_live_xxxxx");
+      error("Usage: postbridge-cli setup --key pb_live_xxxxx");
       error("Get your API key at: https://www.post-bridge.com/dashboard/api-keys");
       process.exit(1);
     }
@@ -192,12 +192,12 @@ const COMMANDS = {
     const parsed = parseArgs(args);
 
     if (!parsed.caption) {
-      error("Usage: postbridge post --caption \"...\" --accounts 1,2,3");
+      error("Usage: postbridge-cli post --caption \"...\" --accounts 1,2,3");
       process.exit(1);
     }
 
     if (!parsed.accounts) {
-      error("Missing --accounts. Use: postbridge accounts to list IDs.");
+      error("Missing --accounts. Use: postbridge-cli accounts to list IDs.");
       process.exit(1);
     }
 
@@ -258,7 +258,7 @@ const COMMANDS = {
   "posts:get": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: postbridge posts:get --id <post_id>");
+      error("Usage: postbridge-cli posts:get --id <post_id>");
       process.exit(1);
     }
     const data = await request("GET", `/v1/posts/${parsed.id}`);
@@ -268,7 +268,7 @@ const COMMANDS = {
   "posts:delete": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: postbridge posts:delete --id <post_id>");
+      error("Usage: postbridge-cli posts:delete --id <post_id>");
       process.exit(1);
     }
     const data = await request("DELETE", `/v1/posts/${parsed.id}`);
@@ -278,7 +278,7 @@ const COMMANDS = {
   "posts:update": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: postbridge posts:update --id <post_id> [--caption \"...\"] [--schedule <iso>] [--accounts 1,2] [--media mid_x]");
+      error("Usage: postbridge-cli posts:update --id <post_id> [--caption \"...\"] [--schedule <iso>] [--accounts 1,2] [--media mid_x]");
       process.exit(1);
     }
     const body = {};
@@ -298,7 +298,7 @@ const COMMANDS = {
   upload: async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.file) {
-      error("Usage: postbridge upload --file ./image.jpg");
+      error("Usage: postbridge-cli upload --file ./image.jpg");
       process.exit(1);
     }
     const data = await uploadFile(parsed.file);
@@ -339,7 +339,7 @@ const COMMANDS = {
   "media:delete": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: postbridge media:delete --id <media_id>");
+      error("Usage: postbridge-cli media:delete --id <media_id>");
       process.exit(1);
     }
     const data = await request("DELETE", `/v1/media/${parsed.id}`);
@@ -348,7 +348,7 @@ const COMMANDS = {
 
   help: async () => {
     output({
-      name: "Post Bridge CLI (postbridge)",
+      name: "Post Bridge CLI (postbridge-cli)",
       version: "1.1.0",
       commands: Object.keys(COMMANDS).filter((c) => c !== "help"),
       docs: "https://www.post-bridge.com/agents",

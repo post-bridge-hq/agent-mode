@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.1.0-green.svg)]()
-[![npm](https://img.shields.io/badge/npm-postbridge-CB3837)](https://www.npmjs.com/package/postbridge)
+[![npm](https://img.shields.io/badge/npm-postbridge-cli-CB3837)](https://www.npmjs.com/package/postbridge-cli)
 [![Post Bridge API](https://img.shields.io/badge/Post_Bridge-API-3B9AF8)](https://api.post-bridge.com/reference)
 
 Give your AI agent the ability to post to 9 social media platforms from a single command.
@@ -23,18 +23,18 @@ Skills are markdown files that give AI agents specialized knowledge and workflow
 npx skills add post-bridge-hq/agent-mode
 ```
 
-This installs the skill **and** makes the `postbridge` CLI available to your agent.
+This installs the skill **and** makes the `postbridge-cli` CLI available to your agent.
 
 ### CLI only (no skill, any terminal):
 
 The CLI is published standalone on npm — no install required, `npx` fetches it on first use:
 
 ```bash
-npx postbridge setup --key pb_live_xxxxx
-npx postbridge accounts
+npx postbridge-cli setup --key pb_live_xxxxx
+npx postbridge-cli accounts
 ```
 
-Requires Node.js 18+. Install globally with `npm i -g postbridge` if you'd rather drop the `npx` prefix.
+Requires Node.js 18+. Install globally with `npm i -g postbridge-cli` if you'd rather drop the `npx` prefix.
 
 <details>
 <summary>Other installation methods</summary>
@@ -74,7 +74,7 @@ Clone this repository and copy `skills/post-bridge/` to your project's `.cursor/
 3. Run the setup command:
 
 ```bash
-npx postbridge setup --key pb_live_xxxxx
+npx postbridge-cli setup --key pb_live_xxxxx
 ```
 
 > **Tip:** You can also set the API key as an environment variable instead of running `setup`: `export POST_BRIDGE_API_KEY=pb_live_xxxxx` (add it to `~/.zshrc` / `~/.bashrc` to persist).
@@ -103,23 +103,23 @@ Ask your AI agent things like:
 
 ```bash
 # List your connected accounts
-npx postbridge accounts
+npx postbridge-cli accounts
 
 # Post to specific accounts
-npx postbridge post --caption "Hello world!" --accounts 1,2,3
+npx postbridge-cli post --caption "Hello world!" --accounts 1,2,3
 
 # Schedule a post (specific UTC time)
-npx postbridge post --caption "Morning post" --accounts 1,2 --schedule "2026-06-20T14:00:00Z"
+npx postbridge-cli post --caption "Morning post" --accounts 1,2 --schedule "2026-06-20T14:00:00Z"
 
 # Or auto-schedule to your next queue slot
-npx postbridge post --caption "Morning post" --accounts 1,2 --use-queue
+npx postbridge-cli post --caption "Morning post" --accounts 1,2 --use-queue
 
 # Upload media and post with it
-npx postbridge upload --file ./video.mp4
-npx postbridge post --caption "Check this out" --accounts 1,2,3 --media mid_xxx
+npx postbridge-cli upload --file ./video.mp4
+npx postbridge-cli post --caption "Check this out" --accounts 1,2,3 --media mid_xxx
 
 # Check analytics
-npx postbridge analytics
+npx postbridge-cli analytics
 ```
 
 ## Supported Platforms
@@ -141,7 +141,7 @@ npx postbridge analytics
 Run the setup command:
 
 ```bash
-npx postbridge setup --key pb_live_xxxxx
+npx postbridge-cli setup --key pb_live_xxxxx
 ```
 
 Or set the environment variable manually:
@@ -164,7 +164,7 @@ The CLI is a zero-dependency Node.js script and requires Node.js 18+ (for built-
 
 ### Post failed on one platform
 
-Each platform posts independently. If one fails, the others still go through. Use `npx postbridge results --post-id <id>` to see per-platform status and error details.
+Each platform posts independently. If one fails, the others still go through. Use `npx postbridge-cli results --post-id <id>` to see per-platform status and error details.
 
 ## Alternative: MCP
 
