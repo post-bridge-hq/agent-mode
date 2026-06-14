@@ -1,7 +1,8 @@
 # Post Bridge Agent Mode
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-green.svg)]()
+[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)]()
+[![npm](https://img.shields.io/badge/npm-postbridge-CB3837)](https://www.npmjs.com/package/postbridge)
 [![Post Bridge API](https://img.shields.io/badge/Post_Bridge-API-3B9AF8)](https://api.post-bridge.com/reference)
 
 Give your AI agent the ability to post to 9 social media platforms from a single command.
@@ -16,11 +17,24 @@ Skills are markdown files that give AI agents specialized knowledge and workflow
 
 ## Install
 
-### CLI (works with Claude Code, Cursor, Windsurf, Codex, and other agents):
+### Skill (works with Claude Code, Cursor, Windsurf, Codex, and other agents):
 
 ```bash
 npx skills add post-bridge-hq/agent-mode
 ```
+
+This installs the skill **and** makes the `postbridge` CLI available to your agent.
+
+### CLI only (no skill, any terminal):
+
+The CLI is published standalone on npm — no install required, `npx` fetches it on first use:
+
+```bash
+npx postbridge setup --key pb_live_xxxxx
+npx postbridge accounts
+```
+
+Requires Node.js 18+. Install globally with `npm i -g postbridge` if you'd rather drop the `npx` prefix.
 
 <details>
 <summary>Other installation methods</summary>
@@ -60,12 +74,10 @@ Clone this repository and copy `skills/post-bridge/` to your project's `.cursor/
 3. Run the setup command:
 
 ```bash
-./scripts/post-bridge.js setup --key pb_live_xxxxx
+npx postbridge setup --key pb_live_xxxxx
 ```
 
-> **Tip:** The path depends on how you installed the skill, but you can ask your agent "Help me set up the Post Bridge skill" to get the correct path.
->
-> You can also set the API key as an environment variable instead: `export POST_BRIDGE_API_KEY=pb_live_xxxxx`
+> **Tip:** You can also set the API key as an environment variable instead of running `setup`: `export POST_BRIDGE_API_KEY=pb_live_xxxxx` (add it to `~/.zshrc` / `~/.bashrc` to persist).
 
 ### Start using it
 
@@ -91,20 +103,23 @@ Ask your AI agent things like:
 
 ```bash
 # List your connected accounts
-./scripts/post-bridge.js accounts
+npx postbridge accounts
 
 # Post to specific accounts
-./scripts/post-bridge.js post --caption "Hello world!" --accounts 1,2,3
+npx postbridge post --caption "Hello world!" --accounts 1,2,3
 
-# Schedule a post
-./scripts/post-bridge.js post --caption "Morning post" --accounts 1,2 --schedule "2026-03-05T14:00:00Z"
+# Schedule a post (specific UTC time)
+npx postbridge post --caption "Morning post" --accounts 1,2 --schedule "2026-06-20T14:00:00Z"
+
+# Or auto-schedule to your next queue slot
+npx postbridge post --caption "Morning post" --accounts 1,2 --use-queue
 
 # Upload media and post with it
-./scripts/post-bridge.js upload --file ./video.mp4
-./scripts/post-bridge.js post --caption "Check this out" --accounts 1,2,3 --media mid_xxx
+npx postbridge upload --file ./video.mp4
+npx postbridge post --caption "Check this out" --accounts 1,2,3 --media mid_xxx
 
 # Check analytics
-./scripts/post-bridge.js analytics
+npx postbridge analytics
 ```
 
 ## Supported Platforms
@@ -126,7 +141,7 @@ Ask your AI agent things like:
 Run the setup command:
 
 ```bash
-./scripts/post-bridge.js setup --key pb_live_xxxxx
+npx postbridge setup --key pb_live_xxxxx
 ```
 
 Or set the environment variable manually:
@@ -149,7 +164,7 @@ The CLI is a zero-dependency Node.js script and requires Node.js 18+ (for built-
 
 ### Post failed on one platform
 
-Each platform posts independently. If one fails, the others still go through. Use `./scripts/post-bridge.js results --post-id <id>` to see per-platform status and error details.
+Each platform posts independently. If one fails, the others still go through. Use `npx postbridge results --post-id <id>` to see per-platform status and error details.
 
 ## Alternative: MCP
 

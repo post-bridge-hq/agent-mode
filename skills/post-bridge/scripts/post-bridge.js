@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Post Bridge Agent Skill CLI
- * A zero-dependency Node.js script for managing social media via Post Bridge API.
+ * Post Bridge CLI (postbridge)
+ * A zero-dependency Node.js CLI for managing social media via the Post Bridge API.
  *
- * MIT Licensed — https://github.com/jackfriks/agent-skills
+ * MIT Licensed — https://github.com/post-bridge-hq/agent-mode
  */
 
 const fs = require("fs");
@@ -48,7 +48,7 @@ function saveApiKey(key, global = true) {
 async function request(method, endpoint, body = null) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: ./scripts/post-bridge.js setup");
+    error("No API key found. Run: postbridge setup");
     process.exit(1);
   }
 
@@ -82,7 +82,7 @@ async function request(method, endpoint, body = null) {
 async function uploadFile(filePath) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: ./scripts/post-bridge.js setup");
+    error("No API key found. Run: postbridge setup");
     process.exit(1);
   }
 
@@ -172,7 +172,7 @@ const COMMANDS = {
     const key = parsed.key || parsed["api-key"];
 
     if (!key) {
-      error("Usage: ./scripts/post-bridge.js setup --key pb_live_xxxxx");
+      error("Usage: postbridge setup --key pb_live_xxxxx");
       error("Get your API key at: https://www.post-bridge.com/dashboard/api-keys");
       process.exit(1);
     }
@@ -192,12 +192,12 @@ const COMMANDS = {
     const parsed = parseArgs(args);
 
     if (!parsed.caption) {
-      error("Usage: ./scripts/post-bridge.js post --caption \"...\" --accounts 1,2,3");
+      error("Usage: postbridge post --caption \"...\" --accounts 1,2,3");
       process.exit(1);
     }
 
     if (!parsed.accounts) {
-      error("Missing --accounts. Use: ./scripts/post-bridge.js accounts to list IDs.");
+      error("Missing --accounts. Use: postbridge accounts to list IDs.");
       process.exit(1);
     }
 
@@ -218,6 +218,14 @@ const COMMANDS = {
       body.scheduled_at = parsed.schedule;
     }
 
+    if (parsed["use-queue"]) {
+      // --use-queue            -> auto-schedule using saved timezone
+      // --queue-timezone <tz>  -> auto-schedule with an explicit IANA timezone
+      body.use_queue = parsed["queue-timezone"]
+        ? { timezone: parsed["queue-timezone"] }
+        : true;
+    }
+
     if (parsed["platform-config"]) {
       try {
         body.platform_configurations = JSON.parse(parsed["platform-config"]);
@@ -235,15 +243,22 @@ const COMMANDS = {
     output(data);
   },
 
-  posts: async () => {
-    const data = await request("GET", "/v1/posts");
+  posts: async (args) => {
+    const parsed = parseArgs(args);
+    const q = new URLSearchParams();
+    if (parsed.status) q.set("status", parsed.status); // scheduled|published|failed|draft
+    if (parsed.platform) q.set("platform", parsed.platform);
+    if (parsed.limit) q.set("limit", parsed.limit);
+    if (parsed.offset) q.set("offset", parsed.offset);
+    const qs = q.toString();
+    const data = await request("GET", `/v1/posts${qs ? `?${qs}` : ""}`);
     output(data);
   },
 
   "posts:get": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: ./scripts/post-bridge.js posts:get --id <post_id>");
+      error("Usage: postbridge posts:get --id <post_id>");
       process.exit(1);
     }
     const data = await request("GET", `/v1/posts/${parsed.id}`);
@@ -253,30 +268,59 @@ const COMMANDS = {
   "posts:delete": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: ./scripts/post-bridge.js posts:delete --id <post_id>");
+      error("Usage: postbridge posts:delete --id <post_id>");
       process.exit(1);
     }
     const data = await request("DELETE", `/v1/posts/${parsed.id}`);
     output(data);
   },
 
+  "posts:update": async (args) => {
+    const parsed = parseArgs(args);
+    if (!parsed.id) {
+      error("Usage: postbridge posts:update --id <post_id> [--caption \"...\"] [--schedule <iso>] [--accounts 1,2] [--media mid_x]");
+      process.exit(1);
+    }
+    const body = {};
+    if (parsed.caption) body.caption = parsed.caption;
+    if (parsed.schedule) body.scheduled_at = parsed.schedule;
+    if (parsed.accounts) body.social_accounts = parsed.accounts.split(",").map(Number);
+    if (parsed.media) body.media = parsed.media.split(",");
+    if (parsed.draft) body.is_draft = true;
+    if (Object.keys(body).length === 0) {
+      error("Nothing to update. Pass --caption, --schedule, --accounts, --media, or --draft.");
+      process.exit(1);
+    }
+    const data = await request("PATCH", `/v1/posts/${parsed.id}`, body);
+    output(data);
+  },
+
   upload: async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.file) {
-      error("Usage: ./scripts/post-bridge.js upload --file ./image.jpg");
+      error("Usage: postbridge upload --file ./image.jpg");
       process.exit(1);
     }
     const data = await uploadFile(parsed.file);
     output(data);
   },
 
-  analytics: async () => {
-    const data = await request("GET", "/v1/analytics");
+  analytics: async (args) => {
+    const parsed = parseArgs(args);
+    const q = new URLSearchParams();
+    if (parsed.platform) q.set("platform", parsed.platform);
+    if (parsed.timeframe) q.set("timeframe", parsed.timeframe); // 7d|30d|90d|all
+    if (parsed.limit) q.set("limit", parsed.limit);
+    if (parsed.offset) q.set("offset", parsed.offset);
+    const qs = q.toString();
+    const data = await request("GET", `/v1/analytics${qs ? `?${qs}` : ""}`);
     output(data);
   },
 
-  "analytics:sync": async () => {
-    const data = await request("POST", "/v1/analytics/sync");
+  "analytics:sync": async (args) => {
+    const parsed = parseArgs(args);
+    const qs = parsed.platform ? `?platform=${parsed.platform}` : "";
+    const data = await request("POST", `/v1/analytics/sync${qs}`);
     output(data);
   },
 
@@ -295,7 +339,7 @@ const COMMANDS = {
   "media:delete": async (args) => {
     const parsed = parseArgs(args);
     if (!parsed.id) {
-      error("Usage: ./scripts/post-bridge.js media:delete --id <media_id>");
+      error("Usage: postbridge media:delete --id <media_id>");
       process.exit(1);
     }
     const data = await request("DELETE", `/v1/media/${parsed.id}`);
@@ -304,8 +348,8 @@ const COMMANDS = {
 
   help: async () => {
     output({
-      name: "Post Bridge Agent Skill",
-      version: "1.0.0",
+      name: "Post Bridge CLI (postbridge)",
+      version: "1.1.0",
       commands: Object.keys(COMMANDS).filter((c) => c !== "help"),
       docs: "https://www.post-bridge.com/agents",
       api_docs: "https://api.post-bridge.com/reference",

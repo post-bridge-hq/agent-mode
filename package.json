@@ -1,19 +1,33 @@
 {
-  "name": "@jackfriks/agent-mode",
-  "version": "1.0.0",
-  "description": "Post Bridge agent mode — post to 9 social media platforms from any AI agent",
+  "name": "postbridge",
+  "version": "1.1.0",
+  "description": "Post Bridge CLI — post, schedule, and track social media across 9 platforms from any AI agent or terminal",
   "license": "MIT",
   "author": "Jack Friks <jack@frikit.net>",
+  "bin": {
+    "postbridge": "skills/post-bridge/scripts/post-bridge.js"
+  },
+  "files": [
+    "skills/post-bridge/scripts/post-bridge.js",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/post-bridge-hq/agent-mode"
+    "url": "git+https://github.com/post-bridge-hq/agent-mode.git"
   },
   "homepage": "https://www.post-bridge.com/agents",
+  "bugs": {
+    "url": "https://github.com/post-bridge-hq/agent-mode/issues"
+  },
   "keywords": [
-    "agent-mode",
-    "ai-agent",
-    "social-media",
     "post-bridge",
+    "postbridge",
+    "social-media",
+    "scheduler",
+    "ai-agent",
+    "agent-mode",
+    "cli",
     "mcp",
     "claude",
     "chatgpt",
@@ -21,7 +35,10 @@
     "tiktok",
     "youtube",
     "twitter",
-    "linkedin"
+    "linkedin",
+    "bluesky",
+    "threads",
+    "pinterest"
   ],
   "engines": {
     "node": ">=18.0.0"
