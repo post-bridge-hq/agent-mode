@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-06-14
+last-updated: 2026-07-16
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -300,37 +300,68 @@ MCP tools accept `media_urls` (public URLs) — the server downloads and uploads
 
 ## Platform Configurations
 
-Pass inside `platform_configurations` object on post creation, or use `--platform-config` with the CLI:
+Optional per-platform overrides, passed inside the `platform_configurations` object on post creation/update, or via `--platform-config '<json>'` with the CLI. This is the #1 place to get wrong, so read carefully:
 
-**TikTok:**
-- `draft: true` — save as draft (publish manually on TikTok with trending sound)
-- `video_cover_timestamp_ms: 3000` — cover thumbnail at 3 seconds
-- `is_aigc: true` — label as AI-generated content
+**Rules**
+1. **Key by platform name.** Every override lives under a platform key: `pinterest`, `instagram`, `tiktok`, `twitter`, `youtube`, `facebook`, `linkedin`, `bluesky`, `threads`, `google_business`. A field placed at the wrong level (or under the wrong platform) is silently ignored.
+2. **Only include platforms you're actually posting to.** Don't add a `tiktok` block if no TikTok account is in `social_accounts`.
+3. **Only include fields you want to override.** Everything you omit falls back to the top-level `caption` / `media`. `caption` and `media` are accepted under *every* platform key; the other fields are platform-specific and listed below.
+4. **Match the accepted values exactly.** Enums (`placement`, `trial_graduation`, `cta_action_type`, `location`, …) only accept the values shown — anything else errors or is dropped.
 
-**Instagram:**
-- `video_cover_timestamp_ms: 3000` — cover thumbnail
-- `is_trial_reel: true` — trial reel mode (needs 1000+ followers)
-- `trial_graduation: "SS_PERFORMANCE"` — auto-graduate based on performance
+Every platform accepts:
+- `caption` (string) — caption override for that platform only
+- `media` (array of media IDs) — media override for that platform only
 
-**YouTube:**
-- `video_cover_timestamp_ms: 3000` — cover thumbnail
-- `title: "My Short Title"` — override post title
+Platform-specific fields:
 
-**Twitter/X:**
-- `caption: "override caption"` — platform-specific caption
+| Platform (`key`) | Field | Type / accepted values | What it does |
+|---|---|---|---|
+| **Pinterest** (`pinterest`) | `board_ids` | array of string IDs | Boards to pin to (IDs, not names). Omit → account default board. |
+| | `link` | string (full URL) | Destination URL the pin links to. |
+| | `title` | string (≤100 chars) | Pin title shown above the caption. |
+| | `video_cover_timestamp_ms` | number (ms) | Video cover frame, e.g. `3000` = 3s in. |
+| **Instagram** (`instagram`) | `placement` | `"story"` | Publish as a Story (one image/video, no caption/carousel/cover/trial). Omit → Reel/feed. |
+| | `video_cover_timestamp_ms` | number (ms) | Cover frame for a reel/video. Ignored if `cover_image` is set. |
+| | `cover_image` | string (media ID) | Uploaded image used as the reel cover. Upload first, pass its ID. |
+| | `is_trial_reel` | boolean | Trial reel (non-followers first). Needs Pro/Creator account, 1,000+ followers, public profile. Max 5/day. Not with `placement:"story"`. |
+| | `trial_graduation` | `"MANUAL"` \| `"SS_PERFORMANCE"` | Trial reel graduation. `MANUAL` (default) = you decide; `SS_PERFORMANCE` = auto-graduate on performance in 72h. |
+| | `user_tags` | array of usernames | People-tag accounts (they get notified). `@` optional. Feed/carousel/reels only; ignored for stories. Max 20. |
+| **TikTok** (`tiktok`) | `title` | string | Overrides the post title. |
+| | `video_cover_timestamp_ms` | number (ms) | Cover frame, e.g. `3000` = 3s in. |
+| | `draft` | boolean | Send as a **native TikTok draft** (finish/publish manually in the app, e.g. to add a trending sound). Different from top-level `is_draft` (which only saves in Post Bridge). |
+| | `is_aigc` | boolean | Label as AI-generated content. |
+| **Twitter/X** (`twitter`) | `first_comment` | string (≤280, 2200 premium) | Reply posted right after the tweet. **Put links here** — the main tweet strips URLs to dodge X's surcharge. A failed reply won't fail the post. |
+| **YouTube** (`youtube`) | `title` | string (≤100 chars) | Video title override. |
+| | `contains_synthetic_media` | boolean | Disclose realistic altered/AI content ("Altered or synthetic content" label). |
+| | `thumbnail` | string (media ID) | Custom thumbnail. **Long-form videos only** — ignored on Shorts. Channel must be verified; JPEG/PNG, 1280×720, <2MB. |
+| **Facebook** (`facebook`) | `placement` | `"story"` | Publish as a Page Story (one image/video, no caption/carousel). Omit → feed post. |
+| **LinkedIn** (`linkedin`) | `document_title` | string | Title for a PDF (document/carousel) post. Only applies when media is a PDF. Defaults to file name. |
+| **Bluesky** (`bluesky`) | — | — | Only `caption` / `media` overrides. |
+| **Threads** (`threads`) | `location` | `"timeline"` \| `"reels"` | Where it appears. `timeline` (default) or `reels` (video only). |
+| **Google Business** (`google_business`) | `media` | array (single image) | **One image only** — extra images are dropped for GMB (other platforms keep all). No video. |
+| | `cta_action_type` | `BOOK` \| `ORDER` \| `SHOP` \| `LEARN_MORE` \| `SIGN_UP` \| `CALL` | CTA button. Pair with `cta_url` (except `CALL`, which uses the location phone number). |
+| | `cta_url` | string (full URL) | CTA destination. Required when `cta_action_type` is set (except `CALL`). |
+| | `language_code` | string (BCP-47) | e.g. `"en-US"`, `"es"`, `"fr-CA"`. Defaults to `"en-US"`. |
 
-**Pinterest:**
-- `title: "Pin Title"` — pin title
-- `link: "https://..."` — destination URL
-- `board_ids: ["board_id"]` — target boards
+**Example — correct multi-platform config (CLI)**
 
-All platforms support `caption` and `media` overrides for per-platform customization.
+Posting one piece of content to TikTok + Instagram + X + Google Business, with per-platform tweaks:
+```
+npx postbridge-cli post --caption "New drop is live 🎉" --accounts 44029,44030,44031,44032 \
+  --platform-config '{
+    "tiktok":   { "draft": true, "is_aigc": false },
+    "instagram": { "caption": "New drop is live 🎉 tap the link in bio", "video_cover_timestamp_ms": 2000 },
+    "twitter":  { "first_comment": "Grab it here: https://example.com/drop" },
+    "google_business": { "cta_action_type": "SHOP", "cta_url": "https://example.com/drop" }
+  }'
+```
+Note how the X link lives in `twitter.first_comment` (not the caption), TikTok uses a native draft, and only the four platforms being posted to appear as keys.
 
 ## Platform Gotchas (important for agents)
 
 These behaviors are easy to miss and cause silent or confusing failures. Account for them before posting.
 
-- **X (Twitter) strips URLs from captions.** Links (`http://`, `https://`, `www.`) are removed from the X caption before posting. This is intentional (link posts on X cost ~13× more per post). If a link is essential for X, put it in a reply or the user's bio, not the caption — and tell the user the link won't appear in the X post.
+- **X (Twitter) strips URLs from captions.** Links (`http://`, `https://`, `www.`) are removed from the X caption before posting. This is intentional (link posts on X cost ~13× more per post). If a link is essential for X, put it in `twitter.first_comment` (links ARE allowed there — it's posted as a reply right after the tweet), not the caption — and tell the user the link won't appear in the X post itself.
 - **Media must be uploaded, not pasted as a raw link.** Do not put a Google Drive / Dropbox / arbitrary external URL into `media`. The `media` field takes Post Bridge `media_id`s only. Either `upload` the file first (CLI/API) or use `media_urls` (CLI `--media-urls`, or the MCP `media_urls` field) with a *direct, public* file URL that the server can download. A non-direct share link will fail with a generic error and no per-platform results.
 - **Very large videos (~300MB+) can silently drop YouTube, LinkedIn, and X.** Those three platforms buffer the whole file server-side and may time out / OOM on huge uploads, producing *no* result row for them while Instagram/TikTok/Facebook/Threads succeed. If `results` shows fewer platforms than you posted to, suspect file size — re-encode smaller or shorter. Keep videos reasonably sized.
 - **Each platform posts independently.** One platform failing does not stop the others. Always check `results --post-id <id>` after a publish to confirm per-platform success and read any error details.
