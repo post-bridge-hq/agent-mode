@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-07-16
+last-updated: 2026-07-28
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -361,6 +361,7 @@ Note how the X link lives in `twitter.first_comment` (not the caption), TikTok u
 
 These behaviors are easy to miss and cause silent or confusing failures. Account for them before posting.
 
+- **Some platforms require media; others accept text-only.** These **fail** a post with no media: `youtube` (exactly 1 video), `tiktok` (1 video, or one+ images for a photo post), `instagram` (1–10 images/videos; a story is exactly 1; PDFs are dropped), `pinterest` (1 image or video). These accept text-only: `twitter`/X (up to 4 images, or 1 video), `facebook`, `linkedin` (up to 20 images, or 1 video, or 1 PDF document), `threads` (up to 4 images/videos), `bluesky` (up to 4 images, or 1 video), `google_business` (text or a single image; no video). A post can be created with no media and have media added later via `posts:update`, but it won't publish to a media-required platform until media exists. When a post targets several platforms, each takes what it supports and skips what it can't (e.g. a video serves YouTube; X uses it too).
 - **X (Twitter) strips URLs from captions.** Links (`http://`, `https://`, `www.`) are removed from the X caption before posting. This is intentional (link posts on X cost ~13× more per post). If a link is essential for X, put it in `twitter.first_comment` (links ARE allowed there — it's posted as a reply right after the tweet), not the caption — and tell the user the link won't appear in the X post itself.
 - **Media must be uploaded, not pasted as a raw link.** Do not put a Google Drive / Dropbox / arbitrary external URL into `media`. The `media` field takes Post Bridge `media_id`s only. Either `upload` the file first (CLI/API) or use `media_urls` (CLI `--media-urls`, or the MCP `media_urls` field) with a *direct, public* file URL that the server can download. A non-direct share link will fail with a generic error and no per-platform results.
 - **Very large videos (~300MB+) can silently drop YouTube, LinkedIn, and X.** Those three platforms buffer the whole file server-side and may time out / OOM on huge uploads, producing *no* result row for them while Instagram/TikTok/Facebook/Threads succeed. If `results` shows fewer platforms than you posted to, suspect file size — re-encode smaller or shorter. Keep videos reasonably sized.

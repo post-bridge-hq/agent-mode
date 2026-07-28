@@ -134,6 +134,25 @@ npx postbridge-cli analytics
 - Threads
 - Bluesky
 
+### Media requirements
+
+Some platforms can't publish a text-only post and will fail without an image or video:
+
+| Platform | Media | Accepts |
+|----------|-------|---------|
+| YouTube | Required | exactly 1 video |
+| TikTok | Required | 1 video, or one+ images (photo post) |
+| Instagram | Required | 1–10 images/videos; story = exactly 1; no PDFs |
+| Pinterest | Required | 1 image or video |
+| X (Twitter) | Optional | up to 4 images, or 1 video |
+| Facebook | Optional | 1 video, or one+ images |
+| LinkedIn | Optional | up to 20 images, or 1 video, or 1 PDF |
+| Threads | Optional | up to 4 images/videos |
+| Bluesky | Optional | up to 4 images, or 1 video |
+| Google Business | Optional | text or a single image; no video |
+
+You can create a post without media and add it later with `posts:update` — but it won't publish to a media-required platform until the media exists.
+
 ## Troubleshooting
 
 ### "API key not found"
