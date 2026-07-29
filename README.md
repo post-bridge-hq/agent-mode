@@ -185,11 +185,60 @@ The CLI is a zero-dependency Node.js script and requires Node.js 18+ (for built-
 
 Each platform posts independently. If one fails, the others still go through. Use `npx postbridge-cli results --post-id <id>` to see per-platform status and error details.
 
-## Alternative: MCP
+## MCP Server
 
-For deeper integration with Claude Desktop, ChatGPT, or other MCP-compatible clients, use the Post Bridge MCP server — it connects in one click with no setup:
+Post Bridge also runs a hosted **MCP server**, so MCP-compatible clients (Claude, ChatGPT, Cursor, and other agents) can connect directly — no CLI, no install.
 
-[post-bridge.com/mcp](https://www.post-bridge.com/mcp)
+- **Endpoint:** `https://www.post-bridge.com/api/mcp/mcp` (streamable HTTP)
+- **Auth:** OAuth 2.0 — connect and sign in, no API key needed. (Or pass a `pb_live_...` key as a Bearer token, see below.)
+
+### Connect
+
+**Claude or ChatGPT (one-click, OAuth):** add a custom connector / app using the endpoint URL above, sign in to Post Bridge, and authorize. Leave any OAuth client ID/secret blank — the server registers the client automatically.
+
+**Claude Desktop (via `mcp-remote`)** — add to `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "post-bridge": {
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://www.post-bridge.com/api/mcp/mcp",
+        "--header",
+        "Authorization: Bearer pb_live_your_api_key_here"
+      ]
+    }
+  }
+}
+```
+
+**Claude Code / other HTTP MCP clients** — add to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "post-bridge": {
+      "type": "http",
+      "url": "https://www.post-bridge.com/api/mcp/mcp",
+      "headers": { "Authorization": "Bearer pb_live_your_api_key_here" }
+    }
+  }
+}
+```
+
+### Tools (13)
+
+`list_social_accounts`, `create_post`, `update_post`, `get_post`, `list_posts`, `delete_post`, `list_post_results`, `upload_media`, `list_media`, `delete_media`, `list_analytics`, `get_analytics_daily`, `sync_analytics`
+
+### Try it
+
+- "Which social accounts do I have connected?"
+- "Schedule this video to TikTok, Instagram Reels and YouTube Shorts for tomorrow at 9am."
+- "Which of my posts got the most views in the last 30 days?"
+
+Full setup guide and tool reference: [post-bridge.com/mcp/docs](https://www.post-bridge.com/mcp/docs)
 
 ## Links
 
