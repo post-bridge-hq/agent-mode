@@ -70,7 +70,7 @@ Clone this repository and copy `skills/post-bridge/` to your project's `.cursor/
 ## Setup
 
 1. Sign up at [post-bridge.com](https://www.post-bridge.com) and connect your social accounts
-2. [Enable API access](https://www.post-bridge.com/dashboard/api-keys) (Settings > API) — $5/month add-on
+2. [Enable API access](https://www.post-bridge.com/dashboard/api-keys) (API Keys page in your dashboard) — $5/month add-on
 3. Run the setup command:
 
 ```bash

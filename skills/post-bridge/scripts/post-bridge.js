@@ -48,7 +48,7 @@ function saveApiKey(key, global = true) {
 async function request(method, endpoint, body = null) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: postbridge-cli setup");
+    error("No API key found. Run: npx postbridge-cli setup --key YOUR_API_KEY");
     process.exit(1);
   }
 
@@ -82,7 +82,7 @@ async function request(method, endpoint, body = null) {
 async function uploadFile(filePath) {
   const apiKey = getApiKey();
   if (!apiKey) {
-    error("No API key found. Run: postbridge-cli setup");
+    error("No API key found. Run: npx postbridge-cli setup --key YOUR_API_KEY");
     process.exit(1);
   }
 
@@ -172,7 +172,7 @@ const COMMANDS = {
     const key = parsed.key || parsed["api-key"];
 
     if (!key) {
-      error("Usage: postbridge-cli setup --key pb_live_xxxxx");
+      error("Usage: npx postbridge-cli setup --key pb_live_xxxxx");
       error("Get your API key at: https://www.post-bridge.com/dashboard/api-keys");
       process.exit(1);
     }
