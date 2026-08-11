@@ -326,6 +326,7 @@ Platform-specific fields:
 | | `is_trial_reel` | boolean | Trial reel (non-followers first). Needs Pro/Creator account, 1,000+ followers, public profile. Max 5/day. Not with `placement:"story"`. |
 | | `trial_graduation` | `"MANUAL"` \| `"SS_PERFORMANCE"` | Trial reel graduation. `MANUAL` (default) = you decide; `SS_PERFORMANCE` = auto-graduate on performance in 72h. |
 | | `user_tags` | array of usernames | People-tag accounts (they get notified). `@` optional. Feed/carousel/reels only; ignored for stories. Max 20. |
+| | `collaborators` | array of usernames | Invite co-authors: the post also appears on their profile and shares its likes/comments. `@` optional. **Max 3, public accounts only** — a private or wrong handle fails the post. Feed/carousel/reels only; ignored for stories. Publishes immediately; shows on their profile once they accept. |
 | **TikTok** (`tiktok`) | `title` | string | Overrides the post title. |
 | | `video_cover_timestamp_ms` | number (ms) | Cover frame, e.g. `3000` = 3s in. |
 | | `draft` | boolean | Send as a **native TikTok draft** (finish/publish manually in the app, e.g. to add a trending sound). Different from top-level `is_draft` (which only saves in Post Bridge). |
