@@ -1,0 +1,25 @@
+{
+  "name": "post-bridge",
+  "displayName": "Post Bridge",
+  "version": "1.1.0",
+  "description": "Post and schedule to Instagram, TikTok, YouTube, X, LinkedIn, Facebook, Pinterest, Threads, and Bluesky without leaving your editor. Ship a release, announce it everywhere, from one command.",
+  "author": {
+    "name": "Post Bridge",
+    "email": "jack@post-bridge.com",
+    "url": "https://www.post-bridge.com"
+  },
+  "homepage": "https://www.post-bridge.com/agents",
+  "repository": "https://github.com/post-bridge-hq/agent-mode",
+  "license": "MIT",
+  "keywords": [
+    "social-media",
+    "posting",
+    "scheduling",
+    "mcp",
+    "instagram",
+    "tiktok",
+    "youtube",
+    "linkedin"
+  ],
+  "logo": "assets/logo.png"
+}
