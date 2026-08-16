@@ -151,7 +151,7 @@ Some platforms can't publish a text-only post and will fail without an image or 
 | X (Twitter) | Optional | up to 4 images, or 1 video |
 | Facebook | Optional | 1 video, or one+ images |
 | LinkedIn | Optional | up to 20 images, or 1 video, or 1 PDF |
-| Threads | Optional | up to 4 images/videos |
+| Threads | Optional | up to 20 images/videos |
 | Bluesky | Optional | up to 4 images, or 1 video |
 | Google Business | Optional | text or a single image; no video |
 
