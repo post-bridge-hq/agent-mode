@@ -331,6 +331,13 @@ Platform-specific fields:
 | | `video_cover_timestamp_ms` | number (ms) | Cover frame, e.g. `3000` = 3s in. |
 | | `draft` | boolean | Send as a **native TikTok draft** (finish/publish manually in the app, e.g. to add a trending sound). Different from top-level `is_draft` (which only saves in Post Bridge). |
 | | `is_aigc` | boolean | Label as AI-generated content. |
+| | `privacy_status` | `"public"` \| `"private"` | `private` publishes visible only to you. Defaults to public. |
+| | `auto_add_music` | boolean | **Photo posts only — ignored on videos.** TikTok picks a soundtrack for the carousel. Defaults to true; set `false` to publish silent. |
+| | `allow_comment` | boolean | Allow comments. Defaults to true. |
+| | `allow_duet` | boolean | Allow Duets. Defaults to true. Video posts only. |
+| | `allow_stitch` | boolean | Allow Stitches. Defaults to true. Video posts only. |
+| | `disclose_branded_content` | boolean | Disclose as paid partnership / branded content. Defaults to false. |
+| | `disclose_your_brand` | boolean | Disclose as promoting your own brand. Defaults to false. |
 | **Twitter/X** (`twitter`) | `first_comment` | string (≤280, 2200 premium) | Reply posted right after the tweet. **Put links here** — the main tweet strips URLs to dodge X's surcharge. A failed reply won't fail the post. |
 | **YouTube** (`youtube`) | `title` | string (≤100 chars) | Video title override. |
 | | `contains_synthetic_media` | boolean | Disclose realistic altered/AI content ("Altered or synthetic content" label). |
