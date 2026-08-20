@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-07-28
+last-updated: 2026-08-20
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -327,6 +327,7 @@ Platform-specific fields:
 | | `trial_graduation` | `"MANUAL"` \| `"SS_PERFORMANCE"` | Trial reel graduation. `MANUAL` (default) = you decide; `SS_PERFORMANCE` = auto-graduate on performance in 72h. |
 | | `user_tags` | array of usernames | People-tag accounts (they get notified). `@` optional. Feed/carousel/reels only; ignored for stories. Max 20. |
 | | `collaborators` | array of usernames | Invite co-authors: the post also appears on their profile and shares its likes/comments. `@` optional. **Max 3, public accounts only** — a private or wrong handle fails the post. Feed/carousel/reels only; ignored for stories. Publishes immediately; shows on their profile once they accept. |
+| | `first_comment` | string (≤2200) | Comment posted right after the post publishes — good spot for a link or hashtags. Ignored for stories. A failed comment won't fail the post. |
 | **TikTok** (`tiktok`) | `title` | string | Overrides the post title. |
 | | `video_cover_timestamp_ms` | number (ms) | Cover frame, e.g. `3000` = 3s in. |
 | | `draft` | boolean | Send as a **native TikTok draft** (finish/publish manually in the app, e.g. to add a trending sound). Different from top-level `is_draft` (which only saves in Post Bridge). |
@@ -343,9 +344,11 @@ Platform-specific fields:
 | | `contains_synthetic_media` | boolean | Disclose realistic altered/AI content ("Altered or synthetic content" label). |
 | | `thumbnail` | string (media ID) | Custom thumbnail. **Long-form videos only** — ignored on Shorts. Channel must be verified; JPEG/PNG, 1280×720, <2MB. |
 | **Facebook** (`facebook`) | `placement` | `"story"` | Publish as a Page Story (one image/video, no caption/carousel). Omit → feed post. |
+| | `first_comment` | string (≤2200) | Comment posted right after the post publishes — good spot for a link/CTA. Ignored for stories. A failed comment won't fail the post. |
 | **LinkedIn** (`linkedin`) | `document_title` | string | Title for a PDF (document/carousel) post. Only applies when media is a PDF. Defaults to file name. |
 | **Bluesky** (`bluesky`) | — | — | Only `caption` / `media` overrides. |
 | **Threads** (`threads`) | `location` | `"timeline"` \| `"reels"` | Where it appears. `timeline` (default) or `reels` (video only). |
+| | `first_comment` | string (≤500) | Reply posted right after the thread publishes — good spot for a link. A failed reply won't fail the post. |
 | **Google Business** (`google_business`) | `media` | array (single image) | **One image only** — extra images are dropped for GMB (other platforms keep all). No video. |
 | | `cta_action_type` | `BOOK` \| `ORDER` \| `SHOP` \| `LEARN_MORE` \| `SIGN_UP` \| `CALL` | CTA button. Pair with `cta_url` (except `CALL`, which uses the location phone number). |
 | | `cta_url` | string (full URL) | CTA destination. Required when `cta_action_type` is set (except `CALL`). |
