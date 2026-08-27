@@ -284,7 +284,7 @@ Post Bridge has a native MCP (Model Context Protocol) server. If you're using Cl
 
 | Tool | Description |
 |------|-------------|
-| `list_social_accounts` | List all connected accounts with IDs, platforms, usernames |
+| `list_social_accounts` | List all connected accounts with IDs, platforms, usernames, and `needs_reconnect` (true = repeated dead-token failures paused posting to that account; skip it and tell the user to reconnect in the dashboard, which clears the pause automatically) |
 | `create_post` | Create/schedule a post. Accepts caption, accounts, media_urls, schedule, use_queue (true or {timezone}), platform configs |
 | `list_posts` | List posts with filters (platform, status, limit, offset) |
 | `get_post` | Get full post details by ID |
