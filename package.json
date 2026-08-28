@@ -1,7 +1,7 @@
 {
   "name": "postbridge-cli",
-  "version": "1.1.0",
-  "description": "Post Bridge CLI — post, schedule, and track social media across 9 platforms from any AI agent or terminal",
+  "version": "1.1.1",
+  "description": "Post Bridge CLI \u2014 post, schedule, and track social media across 9 platforms from any AI agent or terminal",
   "license": "MIT",
   "author": "Jack Friks <jack@frikit.net>",
   "bin": {

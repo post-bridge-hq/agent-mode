@@ -39,8 +39,17 @@ function getApiKey() {
 function saveApiKey(key, global = true) {
   const dir = global ? CONFIG_DIR : path.join(process.cwd(), ".post-bridge");
   const file = global ? CONFIG_FILE : LOCAL_CONFIG;
-  fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(file, JSON.stringify({ apiKey: key }, null, 2));
+  // The file holds a live API key, so keep it owner-only. Default mkdir/write
+  // permissions (0755 dir, 0644 file) leave it world-readable on shared and
+  // multi-user machines. mode on writeFileSync only applies when the file is
+  // created, so chmod an existing one explicitly.
+  fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
+  fs.writeFileSync(file, JSON.stringify({ apiKey: key }, null, 2), { mode: 0o600 });
+  try {
+    fs.chmodSync(file, 0o600);
+  } catch {
+    // Best effort: some filesystems (e.g. mounted volumes on Windows) reject chmod.
+  }
 }
 
 // ── HTTP ────────────────────────────────────────────────────────────────────
