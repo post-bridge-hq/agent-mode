@@ -34,12 +34,12 @@ Two skills ship in this repo:
 | skill | what it does |
 |---|---|
 | `post-bridge` | Create, schedule and manage posts across 9 platforms via the Post Bridge API |
-| `b2c-marketing` | Organic growth coach for B2C apps on TikTok and Instagram, the system behind 500M+ views and 130K+ downloads with no ad spend |
+| `b2c-organic-social-media-marketing` | Organic growth coach for B2C apps on TikTok and Instagram, the system behind 500M+ views and 130K+ downloads with no ad spend |
 
 Install just one with `--skill`:
 
 ```bash
-npx skills add post-bridge-hq/agent-mode --skill b2c-marketing
+npx skills add post-bridge-hq/agent-mode --skill b2c-organic-social-media-marketing
 ```
 
 ### CLI only (no skill, any terminal):

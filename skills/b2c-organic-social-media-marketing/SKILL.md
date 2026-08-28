@@ -1,5 +1,5 @@
 ---
-name: b2c-marketing
+name: b2c-organic-social-media-marketing
 description: >
   Organic growth coach for B2C apps and products on TikTok and Instagram, with no ad spend. Covers
   account creation, the 7-day warmup before posting, finding content-market fit, hook and caption
@@ -207,7 +207,7 @@ That skill wraps the Post Bridge API and `postbridge-cli` for media upload, sche
 
 ## Performance Tracking
 
-Track every post in a log at `workspace/memory/b2c-marketing-log.md`:
+Track every post in a log at `workspace/memory/b2c-social-log.md`:
 
 - Post ID, platform, caption, format type
 - Views, likes, saves, comments
