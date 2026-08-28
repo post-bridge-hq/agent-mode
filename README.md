@@ -27,7 +27,20 @@ Skills are markdown files that give AI agents specialized knowledge and workflow
 npx skills add post-bridge-hq/agent-mode
 ```
 
-This installs the skill **and** makes the `postbridge-cli` CLI available to your agent.
+This installs the skills **and** makes the `postbridge-cli` CLI available to your agent.
+
+Two skills ship in this repo:
+
+| skill | what it does |
+|---|---|
+| `post-bridge` | Create, schedule and manage posts across 9 platforms via the Post Bridge API |
+| `b2c-marketing` | Organic growth coach for B2C apps on TikTok and Instagram, the system behind 500M+ views and 130K+ downloads with no ad spend |
+
+Install just one with `--skill`:
+
+```bash
+npx skills add post-bridge-hq/agent-mode --skill b2c-marketing
+```
 
 ### CLI only (no skill, any terminal):
 
