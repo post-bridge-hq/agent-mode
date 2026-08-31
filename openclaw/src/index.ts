@@ -1,12 +1,17 @@
+import { readFile, stat as statFile } from "node:fs/promises";
+import { basename, extname, resolve as resolvePath } from "node:path";
 import { Type } from "@sinclair/typebox";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 import { jsonResult } from "openclaw/plugin-sdk/tool-results";
 
 // Post Bridge plugin for OpenClaw.
 //
-// Deliberately three tools, not ten. An agent picking from a long list of
-// near-identical tools picks worse, and everything else in the Post Bridge API
-// is reachable through the CLI (`npx postbridge-cli`) when someone needs it.
+// Five tools. Kept deliberately small (an agent picking from a long list of
+// near-identical tools picks worse), but NOT smaller than a working workflow:
+// without upload_media there is no way to create a media id, so posting a local
+// file would be impossible and the plugin would only work for content already
+// hosted at a public URL. Analytics, media listing and post editing stay out;
+// they are reachable via `npx postbridge-cli`.
 //
 // TWO THINGS THE PUBLISHED DOCS GET WRONG, both caught by typechecking against
 // openclaw's own .d.ts rather than trusting the examples:
@@ -62,6 +67,44 @@ async function callApi(
     );
   }
   return parsed;
+}
+
+const MIME_BY_EXT: Record<string, string> = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".mp4": "video/mp4",
+  ".mov": "video/quicktime",
+  ".avi": "video/x-msvideo",
+  ".webm": "video/webm",
+};
+
+// Two-step upload, mirroring postbridge-cli: ask for a presigned URL, then PUT
+// the bytes straight to storage. The bytes never go through the API host.
+async function uploadLocalFile(cfg: PluginConfig, filePath: string, signal?: AbortSignal) {
+  const file = resolvePath(filePath);
+  const info = await statFile(file).catch(() => null);
+  if (!info?.isFile()) throw new Error(`File not found: ${file}`);
+
+  const mimeType = MIME_BY_EXT[extname(file).toLowerCase()] || "application/octet-stream";
+
+  const created: any = await callApi(cfg, "POST", "/v1/media/create-upload-url", {
+    mime_type: mimeType,
+    size_bytes: info.size,
+    name: basename(file),
+  }, signal);
+
+  const put = await fetch(created.upload_url, {
+    method: "PUT",
+    headers: { "Content-Type": mimeType },
+    body: await readFile(file),
+    signal,
+  });
+  if (!put.ok) throw new Error(`Media upload failed (${put.status})`);
+
+  return { media_id: created.media_id, mime_type: mimeType, name: basename(file) };
 }
 
 export default definePluginEntry({
@@ -146,6 +189,37 @@ export default definePluginEntry({
       async execute(_toolCallId: string, params: any, signal?: AbortSignal) {
         const q = params?.post_id ? `?post_id=${encodeURIComponent(params.post_id)}` : "";
         const data = await callApi(readConfig(api), "GET", `/v1/post-results${q}`, undefined, signal);
+        return jsonResult(data);
+      },
+    });
+
+    api.registerTool({
+      name: "postbridge_upload_media",
+      label: "Post Bridge: upload media",
+      description:
+        "Upload a local image or video to Post Bridge and get back a media id to pass to postbridge_post. Use this for any file on disk. Content already hosted at a public URL can skip this and go straight into postbridge_post as media_urls.",
+      promptSnippet:
+        "postbridge_upload_media - upload a local image or video, returns a media id",
+      parameters: Type.Object({
+        file_path: Type.String({
+          description: "Absolute or relative path to the image or video on disk.",
+        }),
+      }),
+      async execute(_toolCallId: string, params: any, signal?: AbortSignal) {
+        const data = await uploadLocalFile(readConfig(api), params.file_path, signal);
+        return jsonResult(data);
+      },
+    });
+
+    api.registerTool({
+      name: "postbridge_list_posts",
+      label: "Post Bridge: list posts",
+      description:
+        "List posts already created in Post Bridge, including scheduled ones. Use this to see what is queued before adding more, which is how you avoid stacking several posts onto one account in a short window.",
+      promptSnippet: "postbridge_list_posts - list existing and scheduled posts",
+      parameters: Type.Object({}),
+      async execute(_toolCallId: string, _params: unknown, signal?: AbortSignal) {
+        const data = await callApi(readConfig(api), "GET", "/v1/posts", undefined, signal);
         return jsonResult(data);
       },
     });

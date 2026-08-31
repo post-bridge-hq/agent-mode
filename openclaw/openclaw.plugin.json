@@ -17,29 +17,68 @@
         "default": "https://api.post-bridge.com"
       }
     },
-    "required": ["apiKey"]
+    "required": [
+      "apiKey"
+    ]
   },
   "contracts": {
     "tools": [
       "postbridge_accounts",
       "postbridge_post",
-      "postbridge_results"
+      "postbridge_results",
+      "postbridge_upload_media",
+      "postbridge_list_posts"
     ]
   },
   "toolMetadata": {
     "postbridge_accounts": {
       "configSignals": [
-        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+        {
+          "rootPath": "plugins.entries.post-bridge.config",
+          "required": [
+            "apiKey"
+          ]
+        }
       ]
     },
     "postbridge_post": {
       "configSignals": [
-        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+        {
+          "rootPath": "plugins.entries.post-bridge.config",
+          "required": [
+            "apiKey"
+          ]
+        }
       ]
     },
     "postbridge_results": {
       "configSignals": [
-        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+        {
+          "rootPath": "plugins.entries.post-bridge.config",
+          "required": [
+            "apiKey"
+          ]
+        }
+      ]
+    },
+    "postbridge_upload_media": {
+      "configSignals": [
+        {
+          "rootPath": "plugins.entries.post-bridge.config",
+          "required": [
+            "apiKey"
+          ]
+        }
+      ]
+    },
+    "postbridge_list_posts": {
+      "configSignals": [
+        {
+          "rootPath": "plugins.entries.post-bridge.config",
+          "required": [
+            "apiKey"
+          ]
+        }
       ]
     }
   }

@@ -32,12 +32,14 @@ Then add your API key. Create one at
 | tool | what it does |
 |---|---|
 | `postbridge_accounts` | List connected accounts with their ids. Call this first. |
+| `postbridge_upload_media` | Upload a local image or video, returns a media id. |
 | `postbridge_post` | Publish or schedule one post to any subset of accounts. |
+| `postbridge_list_posts` | List existing and scheduled posts. |
 | `postbridge_results` | Read per-account results for a post. |
 
-Three tools on purpose. An agent choosing from a long list of near-identical
-tools chooses worse, and the rest of the API is reachable through
-`npx postbridge-cli` when you need it.
+Five tools on purpose: the smallest set that covers a real workflow. An agent
+choosing from a long list of near-identical tools chooses worse, so analytics,
+media listing and post editing are left to `npx postbridge-cli`.
 
 ## Notes for anyone building an OpenClaw plugin
 
