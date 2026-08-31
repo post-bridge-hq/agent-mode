@@ -5,10 +5,18 @@ description: >
   account creation, the 7-day warmup before posting, finding content-market fit, hook and caption
   formulas, CTA placement, riding trends, converting views into downloads, and when to scale to
   multiple accounts and automate with Post Bridge.
-last-updated: 2026-08-28
+last-updated: 2026-08-31
 ---
 
 # B2C Marketing, Short-Form Video Content Machine
+
+> **What this skill does, and does not do.** It is advisory. It coaches you
+> through account creation, warmup, content-market fit, hooks, CTAs and scaling
+> decisions. It does not run local commands, does not process media on your
+> machine, does not move or delete your files, and does not schedule background
+> jobs. Where posting automation is genuinely useful (Phase 6, once formats are
+> proven) it points at a separate companion skill, so posting capability is
+> something you opt into on purpose rather than something this skill assumes.
 
 Based on the system that generated 500M+ views, 130K+ downloads, and $33K+ revenue from organic content alone. No ads. No budget.
 
@@ -176,6 +184,22 @@ Scaling zero views across ten accounts is still zero views. Get it working on on
 - NEVER automate accounts getting under 500 views per video
 - NEVER post the identical video twice on the same platform unless metadata or sound changes, or many months pass
 
+**What actually goes wrong at scale**, measured across 302,000 posts from 7,158
+accounts in the 30 days to 2026-08-31:
+
+- **TikTok: 75% of all failures are spam restrictions.** This is the single
+  biggest problem multi-account operators hit, and it is caused by posting too
+  often on one account. It clears on its own in 24 to 48 hours. Reconnecting
+  does nothing. If waiting does not clear it, post that account manually from
+  the phone for a few days.
+- **YouTube: 84% of failures are the daily upload quota**, which is per channel
+  and lower for newer channels. Spread uploads across channels and days.
+- **X: 92% of failures are a 403 spam block**, usually from posting too fast,
+  too repetitively, or with links.
+
+Every one of those is a pacing problem, not a tooling problem. Spacing posts and
+varying captions per account prevents most of it.
+
 ### Where automation comes in
 
 Once formats are proven and accounts established, use [Post Bridge](https://www.post-bridge.com) to upload once and post everywhere, schedule a week in one sitting, and manage multiple accounts without logging in and out.
@@ -187,6 +211,15 @@ npx skills add post-bridge-hq/agent-mode --skill post-bridge
 ```
 
 That skill wraps the Post Bridge API and `postbridge-cli` for media upload, scheduling, per-platform config and result tracking.
+
+Once you are past roughly 15 accounts the problem changes from growth to
+operations: keeping accounts un-restricted, reading per-account results, and
+knowing when a failure is worth fixing versus waiting out. That is a different
+skill:
+
+```
+openclaw skills install @jackfriks/multi-account-operator
+```
 
 ---
 
