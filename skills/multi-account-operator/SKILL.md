@@ -64,11 +64,21 @@ not.
 
 **TikTok: 75% of failures are spam restrictions.**
 "Your account has been temporarily restricted." Not fixable, not a token
-problem, and reconnecting does nothing. It lifts by itself, usually in 24 to 48
-hours. Confirm in the TikTok app under Settings > Account > Account status. The
-only real fix is posting less often on that account. A restricted account will
-keep failing every scheduled post until it clears, so pause its queue rather
-than letting it burn attempts.
+problem, and reconnecting does nothing. It usually lifts by itself in 24 to 48
+hours. Confirm in the TikTok app under Settings > Account > Account status.
+Pause that account's queue rather than letting it burn attempts, because a
+restricted account fails every scheduled post until it clears.
+
+Two responses, in order:
+
+1. **Post less often on that account.** Spacing is the actual fix. The
+   restriction comes back if the cadence does not change.
+2. **If waiting does not clear it, post that account manually from the phone.**
+   TikTok's restriction commonly blocks API and third-party posting while the
+   native app still publishes fine. No scheduler can work around this, including
+   this one. Posting manually for a few days also tends to rehabilitate the
+   account faster than leaving it idle. Move it back onto a schedule once it
+   holds, at a lower frequency than before.
 
 **YouTube: 84% of failures are the daily upload quota.**
 "The user has exceeded the number of videos they may upload." YouTube caps
