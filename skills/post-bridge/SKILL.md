@@ -4,11 +4,28 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-08-20
+last-updated: 2026-08-31
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
 # Post Bridge Social Media Skill
+
+> **What this skill does to your system and your accounts.** Read before
+> installing.
+>
+> - **Publishes to your real social accounts.** Anything it posts is live. Ask
+>   for confirmation before creating or scheduling a post unless the user has
+>   explicitly said not to, and prefer `draft: true` when intent is unclear.
+> - **Sends your media and captions to a third party.** Files, captions, account
+>   ids and scheduling metadata go to `api.post-bridge.com` under your API key.
+> - **Uses an API key** from `POST_BRIDGE_API_KEY`, `./.post-bridge/config.json`
+>   or `~/.config/post-bridge/config.json`. Only use a key you are willing to
+>   let an agent post through.
+> - **Runs local commands** when following the optional video workflow below,
+>   including `ffmpeg` on your files.
+> - **Can move local files** if you follow the optional `posted/` convention,
+>   and **can create scheduled jobs** if you follow the optional cron step. Both
+>   are suggestions, not requirements. Neither happens unless you ask for it.
 
 Autonomously manage social media posting via [Post Bridge](https://post-bridge.com) API. Post to 9 platforms from a single command or API call.
 
@@ -379,17 +396,54 @@ These behaviors are easy to miss and cause silent or confusing failures. Account
 - **Each platform posts independently.** One platform failing does not stop the others. Always check `results --post-id <id>` after a publish to confirm per-platform success and read any error details.
 - **TikTok / Instagram caption + sound limits differ.** Keep captions concise; for trending-sound workflows use TikTok `draft: true` so the user can add the sound and publish manually.
 
+**What actually fails, measured across 302,000 posts from 7,158 accounts in the
+30 days to 2026-08-31.** Each platform fails in one dominant way, and the right
+response differs:
+
+- **TikTok: 75% of failures are spam restrictions.** The platform's decision
+  about that account, caused by posting too often. Clears itself in 24 to 48
+  hours. Reconnecting does nothing. If waiting does not clear it, the user
+  should post that account manually from the phone for a few days.
+- **YouTube: 84% are the daily upload quota**, which is per channel and lower
+  for new channels. Spread uploads across channels and days.
+- **X: 92% are a 403 spam block**, from posting too fast, too repetitively, or
+  with links.
+- **Instagram: 50% dead token, 41% transient Meta 500s.** The 500s often
+  publish anyway despite reporting failure, so check before republishing or you
+  will double-post.
+- **Threads and LinkedIn: almost entirely dead tokens.** Reconnect.
+- **Pinterest: 46% no valid media attached.**
+- **Bluesky: rate limits, takedowns, and unconfirmed emails**, which silently
+  block video upload.
+
+Expected success rates, so an account is judged against its own platform rather
+than against 100%: LinkedIn 97%, X 88%, YouTube 88%, Instagram 87%, Facebook
+84%, TikTok 82%, Threads 81%, Pinterest 76%, Bluesky 71%.
+
+**The distinction that matters:** a platform restriction cannot be fixed by
+anyone and clears on its own, while a dead token or missing media is actionable.
+Telling the user to reconnect when the account is merely restricted wastes days.
+
 ## Recommended Workflow for Video Content
 
+Optional. Steps 2, 5 and 6 touch the user's machine, so confirm each with them
+before doing it rather than assuming consent.
+
 1. Store videos in a local folder
-2. Extract a frame with ffmpeg to read any text overlays:
+2. *(runs a local command)* Extract a frame with ffmpeg to read any text
+   overlays. Tell the user you are about to run this and on which file:
    ```
    ffmpeg -i video.mp4 -ss 00:00:04 -frames:v 1 frame.jpg -y
    ```
+   Skip it if ffmpeg is unavailable or the user would rather describe the video.
 3. Write caption based on video content + hashtags
-4. Upload → create post → schedule or post instantly
-5. Move posted videos to a `posted/` subfolder to avoid duplicates
-6. Set a cron to check post status 5 mins after scheduled time
+4. Upload, create post, then schedule or post instantly
+5. *(modifies local files)* Optionally move posted videos to a `posted/`
+   subfolder to avoid duplicates. Name the exact source and destination paths
+   and get agreement first. Never delete anything.
+6. *(creates a background job)* Optionally set a cron to check post status 5
+   minutes after the scheduled time. Show the user the exact crontab line and
+   how to remove it before adding it. Do not add one unprompted.
 7. Track performance by checking post results or analytics
 
 ## Automation Guidelines
