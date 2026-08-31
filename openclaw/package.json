@@ -1,0 +1,50 @@
+{
+  "name": "@post-bridge/openclaw-plugin",
+  "version": "0.1.0",
+  "description": "Post Bridge plugin for OpenClaw: publish and schedule social posts to 10 platforms",
+  "license": "MIT",
+  "author": "Jack Friks <jack@frikit.net>",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "openclaw.plugin.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.8.0"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.52"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/post-bridge-hq/agent-mode.git",
+    "directory": "openclaw"
+  },
+  "homepage": "https://www.post-bridge.com/agents",
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "clawhub",
+    "post-bridge",
+    "social-media",
+    "scheduler",
+    "instagram",
+    "tiktok",
+    "youtube"
+  ],
+  "openclaw": {
+    "extensions": [
+      "./dist/index.js"
+    ]
+  }
+}

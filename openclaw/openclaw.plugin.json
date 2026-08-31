@@ -1,0 +1,46 @@
+{
+  "id": "post-bridge",
+  "name": "Post Bridge",
+  "description": "Publish and schedule to Instagram, TikTok, YouTube, X, LinkedIn, Facebook, Pinterest, Threads, Bluesky and Google Business from OpenClaw.",
+  "version": "0.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "apiKey": {
+        "type": "string",
+        "description": "Post Bridge API key (pb_live_...). Create one at https://www.post-bridge.com/dashboard/api-keys"
+      },
+      "baseUrl": {
+        "type": "string",
+        "description": "API base URL. Only change this for local development.",
+        "default": "https://api.post-bridge.com"
+      }
+    },
+    "required": ["apiKey"]
+  },
+  "contracts": {
+    "tools": [
+      "postbridge_accounts",
+      "postbridge_post",
+      "postbridge_results"
+    ]
+  },
+  "toolMetadata": {
+    "postbridge_accounts": {
+      "configSignals": [
+        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+      ]
+    },
+    "postbridge_post": {
+      "configSignals": [
+        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+      ]
+    },
+    "postbridge_results": {
+      "configSignals": [
+        { "rootPath": "plugins.entries.post-bridge.config", "required": ["apiKey"] }
+      ]
+    }
+  }
+}
