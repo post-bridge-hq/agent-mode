@@ -160,7 +160,7 @@ Some platforms can't publish a text-only post and will fail without an image or 
 | YouTube | Required | exactly 1 video |
 | TikTok | Required | 1 video, or one+ images (photo post) |
 | Instagram | Required | 1–10 images/videos; story = exactly 1; no PDFs |
-| Pinterest | Required | 1 image or video |
+| Pinterest | Required | 1-5 images (2+ publishes as a carousel; all images must share one aspect ratio) or 1 video |
 | X (Twitter) | Optional | up to 4 images, or 1 video |
 | Facebook | Optional | 1 video, or one+ images |
 | LinkedIn | Optional | up to 20 images, or 1 video, or 1 PDF |
