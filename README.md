@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/badge/npm-postbridge-cli-CB3837)](https://www.npmjs.com/package/postbridge-cli)
 [![Post Bridge API](https://img.shields.io/badge/Post_Bridge-API-3B9AF8)](https://api.post-bridge.com/reference)
 
-Give your AI agent the ability to post to 9 social media platforms from a single command.
+Give your AI agent the ability to post to 10 social media platforms from a single command.
 
 **Supports:** Instagram, TikTok, YouTube, X (Twitter), LinkedIn, Facebook, Pinterest, Threads, Bluesky
 
@@ -17,7 +17,7 @@ This repo is also a portable [Agent Plugin](https://agent-plugins.org) (spec 1.0
 
 ## What Are Skills?
 
-Skills are markdown files that give AI agents specialized knowledge and workflows for specific tasks. Add this to your project and your AI agent will be able to create, schedule, and publish social media content across 9 platforms.
+Skills are markdown files that give AI agents specialized knowledge and workflows for specific tasks. Add this to your project and your AI agent will be able to create, schedule, and publish social media content across 10 platforms.
 
 ## Install
 
@@ -33,7 +33,7 @@ Two skills ship in this repo:
 
 | skill | what it does |
 |---|---|
-| `post-bridge` | Create, schedule and manage posts across 9 platforms via the Post Bridge API |
+| `post-bridge` | Create, schedule and manage posts across 10 platforms via the Post Bridge API |
 | `b2c-organic-social-media-marketing` | Organic growth coach for B2C apps on TikTok and Instagram, the system behind 500M+ views and 130K+ downloads with no ad spend |
 
 Install just one with `--skill`:
