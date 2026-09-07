@@ -65,6 +65,8 @@ async function request(method, endpoint, body = null) {
   const headers = {
     Authorization: `Bearer ${apiKey}`,
     "Content-Type": "application/json",
+    // Attribution: the API records which surface created a post.
+    "X-PB-Client": "cli",
   };
 
   const options = { method, headers };

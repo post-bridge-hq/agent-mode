@@ -48,6 +48,8 @@ async function callApi(
     headers: {
       Authorization: `Bearer ${cfg.apiKey}`,
       "Content-Type": "application/json",
+      // Attribution: the API records which surface created a post.
+      "X-PB-Client": "openclaw",
     },
     body: body ? JSON.stringify(body) : undefined,
     signal,
