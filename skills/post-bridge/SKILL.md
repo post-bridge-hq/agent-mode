@@ -139,6 +139,20 @@ Content-Type: video/mp4
 Body: <binary file>
 ```
 
+### Upload link (file is on the user's device, no public URL)
+
+When the agent cannot read the file itself (it lives on the user's phone or
+laptop, or is larger than the agent can pass through), mint a drop link and
+hand it to the user:
+```
+POST /v1/media/upload-link
+```
+Returns `{ "url": "https://www.post-bridge.com/u/<token>", "expires_at": ... }`.
+The user opens the link, drops the file (up to 500MB, images/video/PDF), and it
+lands in their media library. Then `GET /v1/media` (newest first) to get the
+`media_id` and pass it to create post. The link is valid 24 hours and can take
+several files.
+
 **List media:**
 ```
 GET /v1/media?limit=50&offset=0
