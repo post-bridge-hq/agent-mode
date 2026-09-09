@@ -372,6 +372,7 @@ Platform-specific fields:
 | | `disclose_your_brand` | boolean | Disclose as promoting your own brand. Defaults to false. |
 | **Twitter/X** (`twitter`) | `first_comment` | string (≤280, 2200 premium) | Reply posted right after the tweet. **Put links here** — the main tweet strips URLs to dodge X's surcharge. A failed reply won't fail the post. |
 | **YouTube** (`youtube`) | `title` | string (≤100 chars) | Video title override. |
+| | `tags` | string[] | Video tags, set per video (YouTube `snippet.tags`). Whole set capped at 500 chars; extras are dropped, the post still publishes. |
 | | `contains_synthetic_media` | boolean | Disclose realistic altered/AI content ("Altered or synthetic content" label). |
 | | `thumbnail` | string (media ID) | Custom thumbnail. **Long-form videos only** — ignored on Shorts. Channel must be verified; JPEG/PNG, 1280×720, <2MB. |
 | **Facebook** (`facebook`) | `placement` | `"story"` | Publish as a Page Story (one image/video, no caption/carousel). Omit → feed post. |
