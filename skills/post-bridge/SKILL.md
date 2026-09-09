@@ -103,6 +103,8 @@ Get your API key at: https://www.post-bridge.com/dashboard/api-keys
 | `npx postbridge-cli post --caption "..." --accounts 1,2 --use-queue --queue-timezone "America/New_York"` | Auto-schedule to next queue slot in a specific timezone |
 | `npx postbridge-cli post --caption "..." --accounts 1,2 --draft` | Save as a draft instead of publishing |
 | `npx postbridge-cli post --caption "..." --accounts 1,2 --platform-config '{"tiktok":{"draft":true}}'` | Post with per-platform options |
+| `npx postbridge-cli post --caption "..." --accounts 1,2 --media mid_x --platform-config '{"youtube":{"title":"...","tags":["a","b"]}}'` | YouTube title and per-video tags |
+| `npx postbridge-cli upload-link` | 24h drop page for files on the user's device; then `media` (newest first) for the media_id |
 | `npx postbridge-cli upload --file ./image.jpg` | Upload media, returns media_id |
 | `npx postbridge-cli post --caption "..." --accounts 1,2,3 --media mid_xxx` | Post with uploaded media |
 | `npx postbridge-cli posts` | List recent posts (filters: `--status`, `--platform`, `--limit`, `--offset`) |
@@ -110,7 +112,9 @@ Get your API key at: https://www.post-bridge.com/dashboard/api-keys
 | `npx postbridge-cli posts:update --id <post_id> --caption "..."` | Update a scheduled/draft post (caption, schedule, accounts, media, draft) |
 | `npx postbridge-cli posts:delete --id <post_id>` | Delete a scheduled/draft post |
 | `npx postbridge-cli analytics` | View analytics (filters: `--platform`, `--timeframe 7d\|30d\|90d\|all`) |
+| `npx postbridge-cli analytics:daily --id <analytics_id>` | Per-day snapshots and deltas for one post (ids from `analytics`) |
 | `npx postbridge-cli analytics:sync` | Refresh analytics data (`--platform tiktok\|youtube\|instagram` optional) |
+| `npx postbridge-cli help` | Every command, flag and platform-config key as JSON |
 | `npx postbridge-cli results --post-id <post_id>` | Check per-platform posting results |
 | `npx postbridge-cli media` | List uploaded media |
 | `npx postbridge-cli media:delete --id <media_id>` | Delete uploaded media |

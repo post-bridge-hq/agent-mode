@@ -1,13 +1,13 @@
 # Post Bridge Agent Mode
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.1.0-green.svg)]()
+[![Version](https://img.shields.io/badge/version-1.1.4-green.svg)]()
 [![npm](https://img.shields.io/badge/npm-postbridge-cli-CB3837)](https://www.npmjs.com/package/postbridge-cli)
 [![Post Bridge API](https://img.shields.io/badge/Post_Bridge-API-3B9AF8)](https://api.post-bridge.com/reference)
 
 Give your AI agent the ability to post to 10 social media platforms from a single command.
 
-**Supports:** Instagram, TikTok, YouTube, X (Twitter), LinkedIn, Facebook, Pinterest, Threads, Bluesky
+**Supports:** Instagram, TikTok, YouTube, X (Twitter), LinkedIn, Facebook, Pinterest, Threads, Bluesky, Google Business
 
 Built on the [Post Bridge API](https://api.post-bridge.com/reference). [Post Bridge](https://www.post-bridge.com) is a social media scheduling tool used by 1,500+ creators and teams to post everywhere from one place.
 
@@ -135,8 +135,19 @@ npx postbridge-cli post --caption "Morning post" --accounts 1,2 --use-queue
 npx postbridge-cli upload --file ./video.mp4
 npx postbridge-cli post --caption "Check this out" --accounts 1,2,3 --media mid_xxx
 
-# Check analytics
+# Check analytics, then per-day numbers for one post
 npx postbridge-cli analytics
+npx postbridge-cli analytics:daily --id <analytics_id>
+
+# File is on someone else's device? Mint a 24h drop page, then list media for the id
+npx postbridge-cli upload-link
+
+# Per-platform options, e.g. YouTube title + tags and a TikTok inbox draft
+npx postbridge-cli post --caption "New video" --accounts 1,2 --media mid_xxx \
+  --platform-config '{"youtube":{"title":"My video","tags":["cooking","easy recipes"]},"tiktok":{"draft":true}}'
+
+# Every command and flag
+npx postbridge-cli help
 ```
 
 ## Supported Platforms
@@ -245,9 +256,9 @@ Post Bridge also runs a hosted **MCP server**, so MCP-compatible clients (Claude
 }
 ```
 
-### Tools (13)
+### Tools (14)
 
-`list_social_accounts`, `create_post`, `update_post`, `get_post`, `list_posts`, `delete_post`, `list_post_results`, `upload_media`, `list_media`, `delete_media`, `list_analytics`, `get_analytics_daily`, `sync_analytics`
+`list_social_accounts`, `create_post`, `update_post`, `get_post`, `list_posts`, `delete_post`, `list_post_results`, `upload_media`, `request_upload_link`, `list_media`, `delete_media`, `list_analytics`, `get_analytics_daily`, `sync_analytics`
 
 ### Try it
 

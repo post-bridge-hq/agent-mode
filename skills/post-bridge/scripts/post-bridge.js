@@ -12,6 +12,15 @@ const path = require("path");
 const os = require("os");
 
 const API_BASE = "https://api.post-bridge.com";
+const VERSION = (() => {
+  // Real version when run from the npm package; the bundled skill copy ships
+  // without package.json.
+  try {
+    return require("../../../package.json").version;
+  } catch {
+    return "1.1.4";
+  }
+})();
 const CONFIG_DIR = path.join(os.homedir(), ".config", "post-bridge");
 const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
 const LOCAL_CONFIG = path.join(process.cwd(), ".post-bridge", "config.json");
@@ -335,10 +344,28 @@ const COMMANDS = {
     output(data);
   },
 
+  "analytics:daily": async (args) => {
+    const parsed = parseArgs(args);
+    if (!parsed.id) {
+      error("Usage: postbridge-cli analytics:daily --id <analytics_id>   (ids come from: postbridge-cli analytics)");
+      process.exit(1);
+    }
+    const data = await request("GET", `/v1/analytics/${parsed.id}/daily`);
+    output(data);
+  },
+
   results: async (args) => {
     const parsed = parseArgs(args);
     const query = parsed["post-id"] ? `?post_id=${parsed["post-id"]}` : "";
     const data = await request("GET", `/v1/post-results${query}`);
+    output(data);
+  },
+
+  "upload-link": async () => {
+    // For files on the user's device with no public URL: a 24-hour drop page.
+    // They open it in any browser, drop one or many files, then `media`
+    // (newest first) gives the media_id to pass to `post --media`.
+    const data = await request("POST", "/v1/media/upload-link", {});
     output(data);
   },
 
@@ -360,8 +387,36 @@ const COMMANDS = {
   help: async () => {
     output({
       name: "Post Bridge CLI (postbridge-cli)",
-      version: "1.1.0",
-      commands: Object.keys(COMMANDS).filter((c) => c !== "help"),
+      version: VERSION,
+      usage: "postbridge-cli <command> [--flag value ...]   (JSON in, JSON out)",
+      commands: {
+        setup: "--key pb_live_xxx [--local]  Save the API key (global, or --local to ./.post-bridge)",
+        accounts: "List connected social accounts with ids, platforms and usernames",
+        post: "--caption \"...\" --accounts 1,2 [--media mid_a,mid_b] [--media-urls url,url] [--schedule <ISO UTC>] [--use-queue [--queue-timezone <IANA>]] [--draft] [--platform-config '<json>']",
+        posts: "[--status scheduled|published|failed|draft] [--platform <name>] [--limit n] [--offset n]  List posts",
+        "posts:get": "--id <post_id>  Full post details and status",
+        "posts:update": "--id <post_id> [--caption ...] [--schedule <ISO>] [--accounts 1,2] [--media mid_x] [--draft]  Edit a scheduled or draft post",
+        "posts:delete": "--id <post_id>  Delete a scheduled or draft post (published posts cannot be deleted)",
+        results: "[--post-id <post_id>]  Per-platform success or failure with the platform's error",
+        upload: "--file ./video.mp4  Upload a local file, returns media_id (JPEG, PNG, MP4, MOV, PDF)",
+        "upload-link": "Mint a 24h drop page for files on someone else's device; then `media` (newest first) for the media_id",
+        media: "List uploaded media",
+        "media:delete": "--id <media_id>  Delete media not used by any post",
+        analytics: "[--platform tiktok|youtube|instagram|facebook] [--timeframe 7d|30d|90d|all] [--limit n] [--offset n]  Lifetime views, likes, comments, shares per post",
+        "analytics:daily": "--id <analytics_id>  Per-day snapshots and deltas for one post (ids from `analytics`)",
+        "analytics:sync": "[--platform <name>]  Pull fresh analytics from the platforms (30 min cooldown)",
+      },
+      platform_config: {
+        note: "--platform-config takes one JSON object keyed by platform. Every platform accepts caption and media overrides.",
+        instagram: "placement:\"story\", cover_image (media id), video_cover_timestamp_ms, is_trial_reel, trial_graduation MANUAL|SS_PERFORMANCE, user_tags[], collaborators[] (max 3), first_comment",
+        tiktok: "title, draft (send to TikTok inbox), video_cover_timestamp_ms, privacy_status public|private, is_aigc, auto_add_music, allow_comment, allow_duet, allow_stitch, disclose_branded_content, disclose_your_brand",
+        twitter: "first_comment (put links here, they are stripped from the tweet)",
+        youtube: "title, tags[] (per video, 500 chars total), contains_synthetic_media, thumbnail (media id, long-form only)",
+        facebook: "placement:\"story\", first_comment",
+        linkedin: "document_title (PDF posts)",
+        pinterest: "title, link, board_ids[], video_cover_timestamp_ms",
+        example: "--platform-config '{\"youtube\":{\"title\":\"My video\",\"tags\":[\"cooking\",\"easy recipes\"]},\"tiktok\":{\"draft\":true}}'",
+      },
       docs: "https://www.post-bridge.com/agents",
       api_docs: "https://api.post-bridge.com/reference",
     });
