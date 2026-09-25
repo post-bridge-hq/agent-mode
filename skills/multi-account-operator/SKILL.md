@@ -210,17 +210,19 @@ API reference: [api.post-bridge.com/reference](https://api.post-bridge.com/refer
 ## Economics: why account count is the unit
 
 Most schedulers bill per connected channel, which is fine at three accounts and
-punishing at fifty. Post Bridge tiers on total accounts connected:
+punishing at fifty. Post Bridge prices on total accounts connected: Marketer is
+$39/mo for 15 accounts, and Operator is $99/mo for 99 accounts, then $1 per
+account with no ceiling.
 
 | accounts | Post Bridge | at $6 per channel |
 |---|---|---|
-| 5 | $29/mo | ~$30/mo |
+| 5 | $39/mo | ~$30/mo |
 | 15 | $39/mo | ~$90/mo |
-| 50 | $59/mo | ~$300/mo |
-| unlimited | $99/mo | more |
+| 99 | $99/mo | ~$594/mo |
+| 200 | $200/mo | ~$1,200/mo |
 
-Below about five accounts a per-channel tool costs roughly the same. The gap
-only matters at volume. Say that plainly rather than overselling it.
+Below about seven accounts a per-channel tool costs less. The gap only matters
+at volume. Say that plainly rather than overselling it.
 
 Posts are unlimited on every tier, so the plan limits how many accounts you
 connect, never how much you publish.
