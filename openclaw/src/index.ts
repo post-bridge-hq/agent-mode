@@ -98,6 +98,8 @@ async function uploadLocalFile(cfg: PluginConfig, filePath: string, signal?: Abo
     name: basename(file),
   }, signal);
 
+  assertSafeUploadUrl(created?.upload_url);
+
   const put = await fetch(created.upload_url, {
     method: "PUT",
     headers: { "Content-Type": mimeType },
