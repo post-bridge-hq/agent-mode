@@ -391,6 +391,8 @@ Platform-specific fields:
 | **Threads** (`threads`) | `location` | `"timeline"` \| `"reels"` | Where it appears. `timeline` (default) or `reels` (video only). |
 | | `first_comment` | string (≤500) | Reply posted right after the thread publishes — good spot for a link. A failed reply won't fail the post. |
 | | `thread` | array (≤25, ≤500 chars each) of string or `{ text, media }` | Multi-post thread: each entry is posted as a reply to the previous one, in order, under the main post. Use `{ text, media: [media ids] }` to attach up to 20 images or videos to that post. Stops at the first failed entry; the main post still publishes. |
+| | `quote_post_id` | string | Native quote post: the quoted post shows as a card. A post id (`platform_id` from an earlier result) or a threads.com post URL (URLs resolve only for the account's own posts). Pasting a post link in the caption does NOT make a quote. Fails the post if the quoted post is gone or can't be quoted. |
+| | `reply_to_id` | string | Publishes the post as a reply under an existing post of the account (id or post URL), e.g. to add to a launch thread later. |
 | **Google Business** (`google_business`) | `media` | array (single image) | **One image only** — extra images are dropped for GMB (other platforms keep all). No video. |
 | | `cta_action_type` | `BOOK` \| `ORDER` \| `SHOP` \| `LEARN_MORE` \| `SIGN_UP` \| `CALL` | CTA button. Pair with `cta_url` (except `CALL`, which uses the location phone number). |
 | | `cta_url` | string (full URL) | CTA destination. Required when `cta_action_type` is set (except `CALL`). |

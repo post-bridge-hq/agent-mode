@@ -415,7 +415,7 @@ const COMMANDS = {
         facebook: "placement:\"story\", first_comment, thumbnail (media id, video feed posts)",
         linkedin: "document_title (PDF posts), first_comment",
         pinterest: "title, link, board_ids[], video_cover_timestamp_ms",
-        threads: "location timeline|reels, first_comment, thread (array of replies chained into a thread; an entry can be { text, media } to attach images)",
+        threads: "location timeline|reels, first_comment, thread (array of replies chained into a thread; an entry can be { text, media } to attach images), quote_post_id (native quote post), reply_to_id (reply under an existing post); both take a post id or post URL",
         example: "--platform-config '{\"youtube\":{\"title\":\"My video\",\"tags\":[\"cooking\",\"easy recipes\"]},\"tiktok\":{\"draft\":true}}'",
       },
       docs: "https://www.post-bridge.com/agents",
