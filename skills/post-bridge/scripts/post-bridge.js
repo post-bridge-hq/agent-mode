@@ -408,7 +408,7 @@ const COMMANDS = {
       },
       platform_config: {
         note: "--platform-config takes one JSON object keyed by platform. Every platform accepts caption and media overrides.",
-        instagram: "placement:\"story\", cover_image (media id), video_cover_timestamp_ms, share_to_feed:false (reel off grid), is_trial_reel, trial_graduation MANUAL|SS_PERFORMANCE, user_tags[], collaborators[] (max 3), first_comment",
+        instagram: "placement:\"story\", cover_image (media id), video_cover_timestamp_ms, share_to_feed:false (reel off grid), is_ai_generated (AI info label), is_trial_reel, trial_graduation MANUAL|SS_PERFORMANCE, user_tags[], collaborators[] (max 3), first_comment",
         tiktok: "title, draft (send to TikTok inbox), video_cover_timestamp_ms, privacy_status public|private, is_aigc, auto_add_music, allow_comment, allow_duet, allow_stitch, disclose_branded_content, disclose_your_brand",
         twitter: "first_comment (put links here, they are stripped from the tweet), thread (array of replies chained into a thread; an entry can be { text, media } to attach images)",
         youtube: "title, tags[] (per video, 500 chars total), contains_synthetic_media, has_paid_product_placement, thumbnail (media id, Shorts and long-form), publish_at (ISO, opt-in: upload private now, YouTube makes it public then)",

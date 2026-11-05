@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-10-19
+last-updated: 2026-11-04
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -359,6 +359,7 @@ Platform-specific fields:
 | | `video_cover_timestamp_ms` | number (ms) | Cover frame for a reel/video. Ignored if `cover_image` is set. |
 | | `cover_image` | string (media ID) | Uploaded image used as the reel cover. Upload first, pass its ID. |
 | | `is_trial_reel` | boolean | Trial reel (non-followers first). Needs Pro/Creator account, 1,000+ followers, public profile. Max 5/day. Not with `placement:"story"`. |
+| | `is_ai_generated` | boolean | `true` adds Instagram's "AI info" label (photo, carousel or reel made/edited with AI). Set at publish, can't be changed later. Ignored for stories. |
 | | `share_to_feed` | boolean | Reels only. `false` keeps the reel off the profile grid (Reels tab only). Omit for the default (grid + Reels tab). |
 | | `trial_graduation` | `"MANUAL"` \| `"SS_PERFORMANCE"` | Trial reel graduation. `MANUAL` (default) = you decide; `SS_PERFORMANCE` = auto-graduate on performance in 72h. |
 | | `user_tags` | array of usernames | People-tag accounts (they get notified). `@` optional. Feed/carousel/reels only; ignored for stories. Max 20. |
