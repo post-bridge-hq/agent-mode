@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-11-04
+last-updated: 2026-11-12
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -97,6 +97,7 @@ Get your API key at: https://www.post-bridge.com/dashboard/api-keys
 |---------|-------------|
 | `npx postbridge-cli setup --key <key>` | Configure API key |
 | `npx postbridge-cli accounts` | List connected social accounts |
+| `npx postbridge-cli accounts --workspace <workspace_id\|main>` | List only one dashboard workspace's accounts |
 | `npx postbridge-cli post --caption "..." --accounts 1,2,3` | Create a post |
 | `npx postbridge-cli post --caption "..." --accounts 1,2,3 --schedule "2026-06-20T09:00:00Z"` | Schedule a post for a specific time (UTC) |
 | `npx postbridge-cli post --caption "..." --accounts 1,2 --use-queue` | Auto-schedule to the next queue slot (saved timezone) |
@@ -129,6 +130,8 @@ Use these endpoints directly if you prefer raw API calls over the CLI.
 GET /v1/social-accounts
 ```
 Returns array of connected accounts with `id`, `platform`, `username`. Store these IDs — you need them for every post.
+
+Each account also has `workspace_id` and `workspace_name`: the dashboard workspace it sits in (`null` / `"Main"` for the default one). Users often keep one workspace per brand or client. When they name a workspace, brand or client, post only to the accounts in that workspace. Filter with `?workspace_id=<id>` or `?workspace_id=main`.
 
 ### Upload Media
 

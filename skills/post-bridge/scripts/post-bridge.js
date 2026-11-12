@@ -203,8 +203,10 @@ const COMMANDS = {
     output({ status: "configured", location: global ? "global" : "local" });
   },
 
-  accounts: async () => {
-    const data = await request("GET", "/v1/social-accounts");
+  accounts: async (args) => {
+    const parsed = parseArgs(args);
+    const qs = parsed.workspace ? `?workspace_id=${encodeURIComponent(parsed.workspace)}` : "";
+    const data = await request("GET", `/v1/social-accounts${qs}`);
     output(data);
   },
 
@@ -391,7 +393,7 @@ const COMMANDS = {
       usage: "postbridge-cli <command> [--flag value ...]   (JSON in, JSON out)",
       commands: {
         setup: "--key pb_live_xxx [--local]  Save the API key (global, or --local to ./.post-bridge)",
-        accounts: "List connected social accounts with ids, platforms and usernames",
+        accounts: "[--workspace <workspace_id|main>]  List connected social accounts with ids, platforms, usernames and the dashboard workspace each sits in",
         post: "--caption \"...\" --accounts 1,2 [--media mid_a,mid_b] [--media-urls url,url] [--schedule <ISO UTC>] [--use-queue [--queue-timezone <IANA>]] [--draft] [--platform-config '<json>']",
         posts: "[--status scheduled|published|failed|draft] [--platform <name>] [--limit n] [--offset n]  List posts",
         "posts:get": "--id <post_id>  Full post details and status",
