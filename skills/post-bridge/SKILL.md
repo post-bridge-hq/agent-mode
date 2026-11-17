@@ -4,7 +4,7 @@ description: >
   Create, schedule, and manage social media posts across Instagram, TikTok, YouTube, X, LinkedIn,
   Facebook, Pinterest, Threads, and Bluesky via the Post Bridge API. Covers media upload, post
   creation, scheduling, platform-specific configs, draft mode, analytics, and post result tracking.
-last-updated: 2026-11-12
+last-updated: 2026-11-17
 allowed-tools: Bash(npx postbridge-cli:*), Bash(postbridge-cli:*), Bash(./scripts/post-bridge.js:*)
 ---
 
@@ -420,6 +420,7 @@ Note how the X link lives in `twitter.first_comment` (not the caption), TikTok u
 
 These behaviors are easy to miss and cause silent or confusing failures. Account for them before posting.
 
+- **LinkedIn company tags go in the caption.** Write `@[Company Name](linkedin.com/company/vanity-name)` (the company's LinkedIn page URL, or `urn:li:organization:<id>`). LinkedIn shows a real company tag with the company's exact LinkedIn name; every other platform gets just the name, so one shared caption works. A company that can't be found posts as plain text and never fails the post. Companies only, not people.
 - **Some platforms require media; others accept text-only.** These **fail** a post with no media: `youtube` (exactly 1 video), `tiktok` (1 video, or one+ images for a photo post), `instagram` (1–10 images/videos; a story is exactly 1; PDFs are dropped), `pinterest` (1-5 images — 2+ publishes as a carousel pin, and ALL images must share the same width/height ratio or Pinterest rejects it — or 1 video). These accept text-only: `twitter`/X (up to 4 images, or 1 video), `facebook`, `linkedin` (up to 20 images, or 1 video, or 1 PDF document), `threads` (up to 20 images/videos), `bluesky` (up to 4 images, or 1 video), `google_business` (text or a single image; no video). A post can be created with no media and have media added later via `posts:update`, but it won't publish to a media-required platform until media exists. When a post targets several platforms, each takes what it supports and skips what it can't (e.g. a video serves YouTube; X uses it too).
 - **X (Twitter) strips URLs from captions.** Links (`http://`, `https://`, `www.`) are removed from the X caption before posting. This is intentional (link posts on X cost ~13× more per post). If a link is essential for X, put it in `twitter.first_comment` (links ARE allowed there — it's posted as a reply right after the tweet), not the caption — and tell the user the link won't appear in the X post itself. Users who want links kept can turn on **Links in X posts** on the billing page ($10/month for 40 link posts every 30 days); the create response includes a `warnings` entry whenever a link will be stripped.
 - **Media must be uploaded, not pasted as a raw link.** Do not put a Google Drive / Dropbox / arbitrary external URL into `media`. The `media` field takes Post Bridge `media_id`s only. Either `upload` the file first (CLI/API) or use `media_urls` (CLI `--media-urls`, or the MCP `media_urls` field) with a *direct, public* file URL that the server can download. A non-direct share link will fail with a generic error and no per-platform results.
